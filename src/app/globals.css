@@ -31,3 +31,32 @@ body {
     text-wrap: balance;
   }
 }
+
+/* react-calendar */
+.react-calendar {
+  @apply w-full max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-4;
+}
+
+.react-calendar__month-view__days__day {
+  @apply relative;
+}
+
+.react-calendar__tile {
+  @apply h-32 w-32 flex items-center justify-center p-2 relative;
+}
+
+.react-calendar__tile--active {
+  @apply bg-blue-500 text-white;
+}
+
+.react-calendar__tile img {
+  @apply w-full h-full object-cover rounded;
+}
+
+.calendar-day {
+  @apply absolute top-1 left-1 text-xs font-bold;
+}
+
+.book-title .calendar-day {
+  @apply hidden;
+}
