@@ -5,9 +5,9 @@ const excelFilePath = "./data/books.xlsx";
 const jsonFilePath = "./public/data/books.json";
 
 interface Book {
+  ID: string;
   Title: string;
   Date: string;
-  Cover: string;
   PartOfSeries?: string;
   PrintLength?: number;
   Language?: string;

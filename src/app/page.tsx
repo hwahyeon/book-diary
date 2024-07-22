@@ -20,7 +20,7 @@ const HomePage: React.FC = () => {
       publisher: book.Publisher,
       publicationDate: book.PublicationDate,
       isbn: book.ISBN,
-      cover: book.Cover,
+      ID: book.ID,
       description: book.Description,
     }));
 

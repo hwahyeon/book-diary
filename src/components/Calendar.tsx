@@ -28,14 +28,14 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => (
                   <div key={index} className="book-cover">
-                    <img src={book.cover} alt={book.title} />
+                    <img src={`${book.ID}.jpg`} alt={book.title} />
                   </div>
                 ))
               ) : (
                 <>
                   <div className="book-cover">
                     <img
-                      src={booksForDate[0].cover}
+                      src={`${booksForDate[0].ID}.jpg`}
                       alt={booksForDate[0].title}
                     />
                   </div>

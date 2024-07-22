@@ -9,6 +9,6 @@ export interface Book {
   publisher?: string;
   publicationDate?: string;
   isbn?: number;
-  cover: string;
+  ID: string;
   description?: string;
 }
