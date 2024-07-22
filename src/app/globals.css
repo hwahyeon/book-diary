@@ -32,10 +32,6 @@ body {
   }
 }
 
-
-
-
-
 /* react-calendar */
 .react-calendar {
   @apply w-full max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-4;
@@ -62,7 +58,25 @@ body {
 }
 
 .react-calendar__tile abbr {
-  display: none !important;
+  display: none !important; /* abbr 태그 숨기기 */
+}
+
+.book-covers-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.book-cover {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin: 2px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .book-cover img {
@@ -105,27 +119,21 @@ body {
   font-size: 0.75rem;
 }
 
-.calendar-tile.cover:hover .book-cover {
-  display: inline-block;
-  transform: translateX(0);
-}
-
-.book-cover {
-  transition: transform 0.3s ease;
-}
-
-.book-cover img {
-  margin: 2px;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.calendar-tile.cover:hover .book-covers-container {
+  flex-direction: row;
 }
 
 .calendar-tile.cover:hover .book-cover {
-  display: inline-block;
   transform: translateX(0);
+  opacity: 1;
 }
 
-.book-cover.hidden {
-  display: none;
+.calendar-tile.cover .book-cover {
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+.calendar-tile.cover .book-cover:first-child {
+  transform: translateX(0);
+  opacity: 1;
 }

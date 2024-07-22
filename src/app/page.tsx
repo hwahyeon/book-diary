@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import BookCalendar from '../components/Calendar';
-import { Book } from '../types/Book';
-import booksData from '../../public/data/books.json';
+import { useEffect, useState } from "react";
+import BookCalendar from "../components/Calendar";
+import { Book } from "../types/Book";
+import booksData from "../../public/data/books.json";
 
 const HomePage: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
