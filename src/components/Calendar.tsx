@@ -168,7 +168,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
       const booksForDate = books.filter(
-        (book) => new Date(book.date).toDateString() === date.toDateString()
+        (book) => new Date(book.Date).toDateString() === date.toDateString()
       );
 
       if (booksForDate.length > 0) {
@@ -181,7 +181,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => (
                   <BookCover key={index}>
-                    <img src={`/data/covers/${book.ID}.jpg`} alt={book.title} />
+                    <img src={`/data/covers/${book.ID}.jpg`} alt={book.Title} />
                   </BookCover>
                 ))
               ) : (
@@ -189,7 +189,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                   <BookCover>
                     <img
                       src={`/data/covers/${booksForDate[0].ID}.jpg`}
-                      alt={booksForDate[0].title}
+                      alt={booksForDate[0].Title}
                     />
                   </BookCover>
                   {booksForDate.length > 1 && (

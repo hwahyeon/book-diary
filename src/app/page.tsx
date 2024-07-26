@@ -10,18 +10,18 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const transformedBooks: Book[] = booksData.map((book: any) => ({
-      title: book.Title,
-      date: book.Date,
-      writer: book.Writer,
-      partOfSeries: book.PartOfSeries,
-      seriesNumber: Number(book.SeriesNumber),
-      printLength: book.PrintLength,
-      language: book.Language,
-      publisher: book.Publisher,
-      publicationDate: book.PublicationDate,
-      isbn: book.ISBN,
       ID: book.ID,
-      description: book.Description,
+      Date: book.Date,
+      Title: book.Title,
+      Writer: book.Writer,
+      PartOfSeries: book.PartOfSeries,
+      SeriesNumber: Number(book.SeriesNumber),
+      PrintLength: Number(book.PrintLength),
+      Language: book.Language,
+      Publisher: book.Publisher,
+      PublicationDate: book.PublicationDate,
+      ISBN: book.ISBN,
+      Description: book.Description,
     }));
 
     setBooks(transformedBooks);
