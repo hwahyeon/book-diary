@@ -1,16 +1,152 @@
-"use client";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import "../app/globals.css";
+import styled from "styled-components";
 import { Book } from "../types/Book";
 
 interface CalendarProps {
   books: Book[];
 }
 
+export const StyledCalendarWrapper = styled.div`
+  .react-calendar {
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+  }
+
+  .react-calendar__navigation {
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .react-calendar__navigation__prev-button,
+  .react-calendar__navigation__prev2-button,
+  .react-calendar__navigation__next-button,
+  .react-calendar__navigation__next2-button {
+    font-size: 25px;
+    padding: 15px;
+  }
+
+  .react-calendar__month-view__weekdays {
+    display: flex;
+    justify-content: center;
+  }
+
+  .react-calendar__month-view__weekdays abbr {
+    font-weight: 500;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .react-calendar__tile abbr {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 5px;
+    font-size: 0.75rem;
+  }
+
+  .react-calendar__month-view__days__day--weekend {
+    abbr {
+      color: #f87171; /* text-red-500 */
+    }
+  }
+
+  .react-calendar__month-view__days__day--neighboringMonth {
+    abbr {
+      color: #9ca3af;
+    }
+    pointer-events: none;
+  }
+
+  .react-calendar__tile {
+    height: 8rem;
+    width: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    position: relative;
+  }
+
+  .react-calendar__tile--active {
+    background-color: #3b82f6;
+    color: white;
+  }
+
+  .react-calendar__navigation__label {
+    font-weight: 500;
+    font-size: 18px;
+  }
+`;
+
+const BookCoversContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const BookCover = styled.div`
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin: 2px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: black;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const CalendarTile = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  &.cover ${BookCover}:first-child {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+const BookCount = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+`;
+
 const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
+
+  
+
+  function goToView() {
+    console.log(hoveredDate)
+    // window.location.href = "/list";
+  }
 
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
@@ -19,63 +155,44 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
       );
       if (booksForDate.length > 0) {
         return (
-          <div
-            className="calendar-tile cover"
+          <CalendarTile
             onMouseEnter={() => setHoveredDate(date.toDateString())}
             onMouseLeave={() => setHoveredDate(null)}
           >
-            <div className="book-covers-container">
+            <BookCoversContainer onClick={goToView}>
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => (
-                  <div key={index} className="book-cover">
+                  <BookCover key={index}>
                     <img src={`${book.ID}.jpg`} alt={book.title} />
-                  </div>
+                  </BookCover>
                 ))
               ) : (
                 <>
-                  <div className="book-cover">
+                  <BookCover>
                     <img
                       src={`${booksForDate[0].ID}.jpg`}
                       alt={booksForDate[0].title}
                     />
-                  </div>
+                  </BookCover>
                   {booksForDate.length > 1 && (
-                    <div className="book-count">{booksForDate.length}+</div>
+                    <BookCount>+{booksForDate.length - 1}</BookCount>
                   )}
                 </>
               )}
-            </div>
-          </div>
+            </BookCoversContainer>
+          </CalendarTile>
         );
       } else {
-        return (
-          <div className="calendar-tile">
-            <span className="date">{date.getDate()}</span>
-          </div>
-        );
+        return <CalendarTile></CalendarTile>;
       }
     }
     return null;
   };
 
-  const tileClassName = ({ date, view }: { date: Date; view: string }) => {
-    if (view === "month") {
-      const booksForDate = books.filter(
-        (book) => new Date(book.date).toDateString() === date.toDateString()
-      );
-      return booksForDate.length > 0 ? "calendar-tile-with-cover" : "";
-    }
-    return "";
-  };
-
   return (
-    <div>
-      <Calendar
-        tileContent={getTileContent}
-        tileClassName={tileClassName}
-        locale="en-US"
-      />
-    </div>
+    <StyledCalendarWrapper>
+      <Calendar tileContent={getTileContent} locale="en-US" />
+    </StyledCalendarWrapper>
   );
 };
 
