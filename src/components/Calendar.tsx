@@ -34,6 +34,16 @@ export const StyledCalendarWrapper = styled.div`
     padding: 15px;
   }
 
+  .react-calendar__month-view__days__day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .react-calendar__month-view__days__day abbr {
+    font-size: 9px;
+  }
+
   .react-calendar__month-view__weekdays {
     display: flex;
     justify-content: center;
@@ -47,23 +57,15 @@ export const StyledCalendarWrapper = styled.div`
     width: 100%;
   }
 
-  .react-calendar__tile abbr {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 5px;
-    font-size: 0.75rem;
-  }
-
   .react-calendar__month-view__days__day--weekend {
     abbr {
-      color: #f87171; /* text-red-500 */
+      color: #f87171;
     }
   }
 
   .react-calendar__month-view__days__day--neighboringMonth {
     abbr {
-      color: #9ca3af;
+      color: #d2d4d6;
     }
     pointer-events: none;
   }
@@ -141,11 +143,26 @@ const BookCount = styled.div`
 const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
 
-  
-
   function goToView() {
-    console.log(hoveredDate)
-    // window.location.href = "/list";
+    if (!hoveredDate) {
+      console.error("No date hovered");
+      return;
+    }
+
+    const date = new Date(hoveredDate);
+
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", hoveredDate);
+      return;
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+
+    const url = `/${year}/${month}`;
+    console.log(url);
+
+    window.location.href = url;
   }
 
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
@@ -153,6 +170,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
       const booksForDate = books.filter(
         (book) => new Date(book.date).toDateString() === date.toDateString()
       );
+
       if (booksForDate.length > 0) {
         return (
           <CalendarTile
