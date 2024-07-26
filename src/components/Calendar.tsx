@@ -71,6 +71,17 @@ export const StyledCalendarWrapper = styled.div`
     pointer-events: none;
   }
 
+  .react-calendar__tile--now {
+  abbr {
+    font-weight: 800;
+    background-color: #5f98f6;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: inline-block;
+  }
+}
+
   .react-calendar__tile {
     height: 8rem;
     width: 8rem;
