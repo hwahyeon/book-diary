@@ -38,6 +38,7 @@ export const StyledCalendarWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 150px;
   }
 
   .react-calendar__month-view__days__day abbr {
