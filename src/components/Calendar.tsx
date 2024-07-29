@@ -16,7 +16,7 @@ export const StyledCalendarWrapper = styled.div`
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    padding: 1rem;
+    padding: 1px;
   }
 
   .react-calendar__navigation {
@@ -88,7 +88,7 @@ export const StyledCalendarWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem;
+    padding: 1px;
     position: relative;
   }
 
@@ -100,6 +100,26 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__navigation__label {
     font-weight: 500;
     font-size: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .react-calendar__tile {
+      height: 6rem;
+      width: 6rem;
+    }
+    .react-calendar__month-view__days__day {
+      min-height: 120px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .react-calendar__tile {
+      height: 4rem;
+      width: 4rem;
+    }
+    .react-calendar__month-view__days__day {
+      min-height: 90px;
+    }
   }
 `;
 
