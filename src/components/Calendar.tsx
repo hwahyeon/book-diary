@@ -72,15 +72,15 @@ export const StyledCalendarWrapper = styled.div`
   }
 
   .react-calendar__tile--now {
-  abbr {
-    font-weight: 800;
-    background-color: #5f98f6;
-    color: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-block;
+    abbr {
+      font-weight: 800;
+      background-color: #5f98f6;
+      color: white;
+      border-radius: 50%;
+      padding: 5px;
+      display: inline-block;
+    }
   }
-}
 
   .react-calendar__tile {
     height: 8rem;
@@ -154,8 +154,9 @@ const BookCount = styled.div`
 
 const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
+  const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
 
-  function goToView() {
+  const goToView = () => {
     if (!hoveredDate) {
       console.error("No date hovered");
       return;
@@ -175,7 +176,21 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     console.log(url);
 
     window.location.href = url;
-  }
+  };
+
+  const handleImageError = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+    id: string
+  ) => {
+    const target = event.currentTarget as HTMLImageElement;
+    setErrorImages((prevErrorImages) => ({
+      ...prevErrorImages,
+      [id]: true,
+    }));
+    if (target.src !== "/default.webp") {
+      target.src = "/default.webp";
+    }
+  };
 
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
@@ -193,15 +208,30 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => (
                   <BookCover key={index}>
-                    <img src={`/data/covers/${book.ID}.jpg`} alt={book.Title} />
+                    <img
+                      src={
+                        errorImages[book.ID]
+                          ? "/default.webp"
+                          : `/data/covers/${book.ID}.jpg`
+                      }
+                      alt={book.Title}
+                      onError={(event) => handleImageError(event, book.ID)}
+                    />
                   </BookCover>
                 ))
               ) : (
                 <>
                   <BookCover>
                     <img
-                      src={`/data/covers/${booksForDate[0].ID}.jpg`}
+                      src={
+                        errorImages[booksForDate[0].ID]
+                          ? "/default.webp"
+                          : `/data/covers/${booksForDate[0].ID}.jpg`
+                      }
                       alt={booksForDate[0].Title}
+                      onError={(event) =>
+                        handleImageError(event, booksForDate[0].ID)
+                      }
                     />
                   </BookCover>
                   {booksForDate.length > 1 && (
