@@ -59,8 +59,8 @@ export default function DetailPage({ params }: DetailPageProps) {
       ...prevErrorImages,
       [id]: true,
     }));
-    if (target.src !== "/default.webp") {
-      target.src = "/default.webp";
+    if (target.src !== "/default.png") {
+      target.src = "/default.png";
     }
   };
 
@@ -103,7 +103,7 @@ export default function DetailPage({ params }: DetailPageProps) {
                     <img
                       src={
                         errorImages[book.ID]
-                          ? "/default.webp"
+                          ? "/default.png"
                           : `/data/covers/${book.ID}.jpg`
                       }
                       alt={book.Title}

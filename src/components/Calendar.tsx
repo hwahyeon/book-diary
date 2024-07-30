@@ -215,8 +215,8 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
       ...prevErrorImages,
       [id]: true,
     }));
-    if (target.src !== "/default.webp") {
-      target.src = "/default.webp";
+    if (target.src !== "/default.png") {
+      target.src = "/default.png";
     }
   };
 
@@ -239,7 +239,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                     <img
                       src={
                         errorImages[book.ID]
-                          ? "/default.webp"
+                          ? "/default.png"
                           : `/data/covers/${book.ID}.jpg`
                       }
                       alt={book.Title}
@@ -253,7 +253,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                     <img
                       src={
                         errorImages[booksForDate[0].ID]
-                          ? "/default.webp"
+                          ? "/default.png"
                           : `/data/covers/${booksForDate[0].ID}.jpg`
                       }
                       alt={booksForDate[0].Title}

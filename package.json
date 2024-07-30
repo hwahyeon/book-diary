@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "convert-excel-to-json": "npx ts-node scripts/convert-excel-to-json.ts",
-    "dev": "npm run convert-excel-to-json && next dev"
+    "dev": "next dev"
   },
   "dependencies": {
     "@types/styled-components": "^5.1.34",
