@@ -30,6 +30,6 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add public/data/books.json
           git commit -m "docs: Convert Excel to JSON"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
