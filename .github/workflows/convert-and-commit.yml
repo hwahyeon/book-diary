@@ -1,0 +1,35 @@
+name: Convert Excel to JSON
+
+on:
+  push:
+    paths:
+      - 'data/**/*.xlsx'
+      - '.github/workflows/convert-and-commit.yml'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Excel to JSON conversion
+        run: npm run convert-excel-to-json
+
+      - name: Commit JSON files
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/books.json
+          git commit -m "docs: Convert Excel to JSON"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
