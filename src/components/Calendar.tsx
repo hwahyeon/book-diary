@@ -103,9 +103,13 @@ export const StyledCalendarWrapper = styled.div`
   }
 
   @media (max-width: 768px) {
+    .react-calendar {
+      padding: 0px;
+    }
     .react-calendar__tile {
       height: 6rem;
       width: 6rem;
+      padding: 0.1px;
     }
     .react-calendar__month-view__days__day {
       min-height: 120px;
@@ -113,9 +117,13 @@ export const StyledCalendarWrapper = styled.div`
   }
 
   @media (max-width: 480px) {
+    .react-calendar {
+      padding: 0px;
+    }
     .react-calendar__tile {
       height: 4rem;
       width: 4rem;
+      padding: 0px;
     }
     .react-calendar__month-view__days__day {
       min-height: 90px;
