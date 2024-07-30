@@ -13,7 +13,7 @@ interface DetailPageProps {
 
 export default function DetailPage({ params }: DetailPageProps) {
   const { year, month } = params;
-
+  const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
@@ -48,6 +48,20 @@ export default function DetailPage({ params }: DetailPageProps) {
 
   const handleBackClick = () => {
     window.location.href = "/";
+  };
+
+  const handleImageError = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+    id: string
+  ) => {
+    const target = event.currentTarget as HTMLImageElement;
+    setErrorImages((prevErrorImages) => ({
+      ...prevErrorImages,
+      [id]: true,
+    }));
+    if (target.src !== "/default.webp") {
+      target.src = "/default.webp";
+    }
   };
 
   return (
@@ -87,14 +101,22 @@ export default function DetailPage({ params }: DetailPageProps) {
                     className="bg-white shadow-md rounded-lg p-4 w-48"
                   >
                     <img
-                      src={`/data/covers/${book.ID}.jpg`}
+                      src={
+                        errorImages[book.ID]
+                          ? "/default.webp"
+                          : `/data/covers/${book.ID}.jpg`
+                      }
                       alt={book.Title}
                       className="w-full h-64 object-cover mb-4 rounded-lg"
+                      onError={(event) => handleImageError(event, book.ID)}
                     />
-                    <strong>{book.Title}</strong>
-                    <br />{book.Writer} <br />
+                    <strong className="block whitespace-normal">
+                      {book.Title}
+                    </strong>
+                    <br />
+                    {book.Writer} <br />
                     <span className="text-sm text-gray-500">
-                      ({book.PartOfSeries} {book.SeriesNumber})
+                      {book.PartOfSeries} {book.SeriesNumber}
                     </span>
                   </li>
                 ))}

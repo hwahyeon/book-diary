@@ -30,7 +30,7 @@ const convertExcelToJson = () => {
   const jsonData = rows.map((row) => {
     const obj: { [key: string]: any } = {};
     headers.forEach((header, index) => {
-      obj[header] = row[index];
+      obj[header] = row[index] !== undefined ? row[index] : "";
     });
     return obj as Book;
   });

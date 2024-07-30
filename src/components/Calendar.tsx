@@ -16,7 +16,7 @@ export const StyledCalendarWrapper = styled.div`
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    padding: 1rem;
+    padding: 1px;
   }
 
   .react-calendar__navigation {
@@ -72,15 +72,15 @@ export const StyledCalendarWrapper = styled.div`
   }
 
   .react-calendar__tile--now {
-  abbr {
-    font-weight: 800;
-    background-color: #5f98f6;
-    color: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-block;
+    abbr {
+      font-weight: 800;
+      background-color: #5f98f6;
+      color: white;
+      border-radius: 50%;
+      padding: 5px;
+      display: inline-block;
+    }
   }
-}
 
   .react-calendar__tile {
     height: 8rem;
@@ -88,7 +88,7 @@ export const StyledCalendarWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem;
+    padding: 1px;
     position: relative;
   }
 
@@ -100,6 +100,34 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__navigation__label {
     font-weight: 500;
     font-size: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .react-calendar {
+      padding: 0px;
+    }
+    .react-calendar__tile {
+      height: 6rem;
+      width: 6rem;
+      padding: 0.1px;
+    }
+    .react-calendar__month-view__days__day {
+      min-height: 120px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .react-calendar {
+      padding: 0px;
+    }
+    .react-calendar__tile {
+      height: 4rem;
+      width: 4rem;
+      padding: 0px;
+    }
+    .react-calendar__month-view__days__day {
+      min-height: 90px;
+    }
   }
 `;
 
@@ -154,8 +182,9 @@ const BookCount = styled.div`
 
 const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
+  const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
 
-  function goToView() {
+  const goToView = () => {
     if (!hoveredDate) {
       console.error("No date hovered");
       return;
@@ -175,7 +204,21 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     console.log(url);
 
     window.location.href = url;
-  }
+  };
+
+  const handleImageError = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+    id: string
+  ) => {
+    const target = event.currentTarget as HTMLImageElement;
+    setErrorImages((prevErrorImages) => ({
+      ...prevErrorImages,
+      [id]: true,
+    }));
+    if (target.src !== "/default.webp") {
+      target.src = "/default.webp";
+    }
+  };
 
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
@@ -193,15 +236,30 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => (
                   <BookCover key={index}>
-                    <img src={`/data/covers/${book.ID}.jpg`} alt={book.Title} />
+                    <img
+                      src={
+                        errorImages[book.ID]
+                          ? "/default.webp"
+                          : `/data/covers/${book.ID}.jpg`
+                      }
+                      alt={book.Title}
+                      onError={(event) => handleImageError(event, book.ID)}
+                    />
                   </BookCover>
                 ))
               ) : (
                 <>
                   <BookCover>
                     <img
-                      src={`/data/covers/${booksForDate[0].ID}.jpg`}
+                      src={
+                        errorImages[booksForDate[0].ID]
+                          ? "/default.webp"
+                          : `/data/covers/${booksForDate[0].ID}.jpg`
+                      }
                       alt={booksForDate[0].Title}
+                      onError={(event) =>
+                        handleImageError(event, booksForDate[0].ID)
+                      }
                     />
                   </BookCover>
                   {booksForDate.length > 1 && (
