@@ -86,7 +86,7 @@ export default function DetailPage({ params }: DetailPageProps) {
         </svg>
         Back to Calendar
       </button>
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="text-2xl font-bold mb-4 py-10">
         {year}년 {month}월
       </h1>
       <div>
@@ -110,7 +110,7 @@ export default function DetailPage({ params }: DetailPageProps) {
                       className="w-full h-64 object-cover mb-4 rounded-lg"
                       onError={(event) => handleImageError(event, book.ID)}
                     />
-                    <strong className="block whitespace-normal">
+                    <strong className="block whitespace-normal break-words">
                       {book.Title}
                     </strong>
                     <br />
