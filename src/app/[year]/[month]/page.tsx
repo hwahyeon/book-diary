@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import booksData from "../../../../public/data/books.json";
 import { Book } from "../../../types/Book";
+import Link from "next/link";
 
 interface DetailPageProps {
   params: {
@@ -72,6 +73,24 @@ export default function DetailPage({ params }: DetailPageProps) {
     return writer;
   };
 
+  const getPrevMonthLink = () => {
+    const currentYear = parseInt(year as string);
+    const currentMonth = parseInt(month as string);
+    const newDate = new Date(currentYear, currentMonth - 2, 1);
+    const newYear = newDate.getFullYear();
+    const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
+    return `/${newYear}/${newMonth}`;
+  };
+
+  const getNextMonthLink = () => {
+    const currentYear = parseInt(year as string);
+    const currentMonth = parseInt(month as string);
+    const newDate = new Date(currentYear, currentMonth, 1);
+    const newYear = newDate.getFullYear();
+    const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
+    return `/${newYear}/${newMonth}`;
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-5 px-10">
       <button
@@ -94,9 +113,21 @@ export default function DetailPage({ params }: DetailPageProps) {
         </svg>
         Back to Calendar
       </button>
-      <h1 className="text-2xl font-bold mb-4 py-10">
-        {year}년 {month}월
-      </h1>
+      <div className="flex items-center justify-between mb-8 pt-10 px-4">
+        <Link href={getPrevMonthLink()}>
+          <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer mr-4">
+            &lt;
+          </div>
+        </Link>
+        <h1 className="text-2xl font-bold mx-4">
+          {year}년 {month}월
+        </h1>
+        <Link href={getNextMonthLink()}>
+          <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer ml-4">
+            &gt;
+          </div>
+        </Link>
+      </div>
       <div>
         <div className="space-y-6">
           {Object.keys(booksByDate).map((day) => (
