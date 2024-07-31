@@ -16,7 +16,8 @@ export const StyledCalendarWrapper = styled.div`
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    padding: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   .react-calendar__navigation {
