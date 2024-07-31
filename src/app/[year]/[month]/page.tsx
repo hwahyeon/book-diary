@@ -116,7 +116,9 @@ export default function DetailPage({ params }: DetailPageProps) {
                     <br />
                     {book.Writer} <br />
                     <span className="text-sm text-gray-500">
-                      {book.PartOfSeries} {book.SeriesNumber}
+                      {book.PartOfSeries && book.SeriesNumber
+                        ? `${book.PartOfSeries} ${book.SeriesNumber}`
+                        : book.PartOfSeries || book.SeriesNumber || ""}
                     </span>
                   </li>
                 ))}
