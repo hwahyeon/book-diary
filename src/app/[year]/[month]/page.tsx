@@ -64,6 +64,14 @@ export default function DetailPage({ params }: DetailPageProps) {
     }
   };
 
+  const shortenWriterName = (writer: string) => {
+    const maxLength = 50;
+    if (writer.length > maxLength) {
+      return writer.substring(0, maxLength) + "...";
+    }
+    return writer;
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-5 px-10">
       <button
@@ -114,7 +122,7 @@ export default function DetailPage({ params }: DetailPageProps) {
                       {book.Title}
                     </strong>
                     <br />
-                    {book.Writer} <br />
+                    {shortenWriterName(book.Writer)} <br />
                     <span className="text-sm text-gray-500">
                       {book.PartOfSeries && book.SeriesNumber
                         ? `${book.PartOfSeries} ${book.SeriesNumber}`
