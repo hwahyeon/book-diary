@@ -15,6 +15,8 @@ interface Book {
   PublicationDate?: string;
   ISBN?: string;
   Description?: string;
+  Ebook?: number;
+  Type?: string;
 }
 
 const convertExcelToJson = () => {
