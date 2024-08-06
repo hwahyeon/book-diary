@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Calendar from "react-calendar";
 import styled from "styled-components";
 import { Book } from "../types/Book";
@@ -184,6 +184,23 @@ const BookCount = styled.div`
 const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
+  const [activeStartDate, setActiveStartDate] = useState<Date>(new Date());
+
+  const handlePrevMonth = () => {
+    if (activeStartDate) {
+      const prevMonth = new Date(activeStartDate);
+      prevMonth.setMonth(prevMonth.getMonth() - 1);
+      setActiveStartDate(prevMonth);
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (activeStartDate) {
+      const nextMonth = new Date(activeStartDate);
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+      setActiveStartDate(nextMonth);
+    }
+  };
 
   const goToView = () => {
     if (!hoveredDate) {
@@ -202,8 +219,6 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     const month = String(date.getMonth() + 1).padStart(2, "0");
 
     const url = `/${year}/${month}`;
-    console.log(url);
-
     window.location.href = url;
   };
 
@@ -223,6 +238,33 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
 
   const handleAllListClick = () => {
     window.location.href = "/all";
+  };
+
+  // Swipe
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+    handleSwipeGesture();
+  };
+
+  const handleSwipeGesture = () => {
+    const deltaX = touchEndX.current - touchStartX.current;
+
+    if (Math.abs(deltaX) > 70) {
+      if (deltaX > 0) {
+        handlePrevMonth();
+        // alert("Swiped right!");
+      } else {
+        handleNextMonth();
+        // alert("Swiped left!");
+      }
+    }
   };
 
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
@@ -283,7 +325,10 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
   };
 
   return (
-    <StyledCalendarWrapper>
+    <StyledCalendarWrapper
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <button
         onClick={handleAllListClick}
         className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
@@ -304,7 +349,14 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
         </svg>
         View All Books
       </button>
-      <Calendar tileContent={getTileContent} locale="en-US" />
+      <Calendar
+        activeStartDate={activeStartDate}
+        onActiveStartDateChange={({ activeStartDate }) => {
+          if (activeStartDate) setActiveStartDate(activeStartDate);
+        }}
+        tileContent={getTileContent}
+        locale="en-US"
+      />
     </StyledCalendarWrapper>
   );
 };
