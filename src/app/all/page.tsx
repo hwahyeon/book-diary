@@ -1,22 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import booksData from "../../../public/data/books.json";
 import { Book } from "../../types/Book";
 
 export default function AllListPage() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
-  const [books, setBooks] = useState<Book[]>([]);
-
-  useEffect(() => {
-    const transformedBooks: Book[] = (booksData as any).map((book: any) => ({
-      ...book,
-      SeriesNumber: parseInt(book.SeriesNumber, 10),
-      PrintLength: parseInt(book.PrintLength, 10),
-    }));
-
-    setBooks(transformedBooks);
-  }, []);
 
   const handleBackClick = () => {
     window.location.href = "/";
