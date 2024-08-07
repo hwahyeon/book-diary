@@ -34,6 +34,18 @@ const convertExcelToJson = () => {
     headers.forEach((header, index) => {
       obj[header] = row[index] !== undefined ? row[index] : "";
     });
+
+    // Type change
+    if (obj["SeriesNumber"]) {
+      obj["SeriesNumber"] = Number(obj["SeriesNumber"]);
+    }
+    if (obj["PrintLength"]) {
+      obj["PrintLength"] = Number(obj["PrintLength"]);
+    }
+    if (obj["Ebook"]) {
+      obj["Ebook"] = Number(obj["Ebook"]);
+    }
+
     return obj as Book;
   });
 

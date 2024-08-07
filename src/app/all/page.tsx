@@ -3,9 +3,11 @@
 import { useState } from "react";
 import booksData from "../../../public/data/books.json";
 import { Book } from "../../types/Book";
+import { useRouter } from 'next/navigation';
 
 export default function AllListPage() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
+  const router = useRouter();
 
   const handleBackClick = () => {
     window.location.href = "/";
@@ -31,6 +33,10 @@ export default function AllListPage() {
       return writer.substring(0, maxLength) + "...";
     }
     return writer;
+  };
+
+  const viewDetail = (date: Book) => {
+    router.push(`/detail/${date.ID}`);
   };
 
   return (
@@ -64,8 +70,9 @@ export default function AllListPage() {
             {booksData.map((book: Book, index: number) => (
               <li
                 key={index}
-                className="bg-white shadow-md rounded-lg p-4 w-48"
-              >
+                className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
+                onClick={() => viewDetail(book)}
+                  >
                 <img
                   src={
                     errorImages[book.ID]
