@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import Calendar from "react-calendar";
 import styled from "styled-components";
+import Calendar from "react-calendar";
 import { Book } from "../types/Book";
 
 interface CalendarProps {

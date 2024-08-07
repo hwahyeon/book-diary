@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import booksData from "../../../public/data/books.json";
 import { Book } from "../../types/Book";
-import { useRouter } from 'next/navigation';
 
 export default function AllListPage() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -72,7 +72,7 @@ export default function AllListPage() {
                 key={index}
                 className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
                 onClick={() => viewDetail(book)}
-                  >
+              >
                 <img
                   src={
                     errorImages[book.ID]

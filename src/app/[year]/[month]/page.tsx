@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import booksData from "../../../../public/data/books.json";
-import { Book } from "../../../types/Book";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { Book } from "../../../types/Book";
+import booksData from "../../../../public/data/books.json";
 
 interface DetailPageProps {
   params: {
