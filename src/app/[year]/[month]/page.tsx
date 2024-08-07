@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import booksData from "../../../../public/data/books.json";
 import { Book } from "../../../types/Book";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 interface DetailPageProps {
   params: {
@@ -16,6 +17,7 @@ export default function DetailPage({ params }: DetailPageProps) {
   const { year, month } = params;
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
   const [books, setBooks] = useState<Book[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const transformedBooks: Book[] = (booksData as any).map((book: any) => ({
@@ -91,6 +93,10 @@ export default function DetailPage({ params }: DetailPageProps) {
     return `/${newYear}/${newMonth}`;
   };
 
+  const viewDetail = (date: Book) => {
+    router.push(`/detail/${date.ID}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-5 px-10">
       <button
@@ -137,7 +143,8 @@ export default function DetailPage({ params }: DetailPageProps) {
                 {booksByDate[day].map((book: Book, index: number) => (
                   <li
                     key={index}
-                    className="bg-white shadow-md rounded-lg p-4 w-48"
+                    className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
+                    onClick={() => viewDetail(book)}
                   >
                     <img
                       src={
