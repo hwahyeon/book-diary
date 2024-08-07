@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Book } from "../../../types/Book";
+import { useParams } from "next/navigation";
 import booksData from "../../../../public/data/books.json";
-import { useParams } from 'next/navigation';
+import { Book } from "../../../types/Book";
 
 const BookDetailPage: React.FC = () => {
+  const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
   const [book, setBook] = useState<Book | null>(null);
   const params = useParams();
   const { id } = params;
-  console.log(id)
+  console.log(id);
 
   useEffect(() => {
     if (id) {
@@ -25,6 +26,20 @@ const BookDetailPage: React.FC = () => {
       </div>
     );
   }
+
+  const handleImageError = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+    id: string
+  ) => {
+    const target = event.currentTarget as HTMLImageElement;
+    setErrorImages((prevErrorImages) => ({
+      ...prevErrorImages,
+      [id]: true,
+    }));
+    if (target.src !== "/default.png") {
+      target.src = "/default.png";
+    }
+  };
 
   const handleBackClick = () => {
     window.history.back();
@@ -74,7 +89,11 @@ const BookDetailPage: React.FC = () => {
         <div className="w-full lg:w-1/3 p-4 flex justify-center">
           <div className="max-w-xs w-full h-70 overflow-hidden flex items-center justify-center">
             <img
-              src={`/data/covers/${book.ID}.jpg`}
+              src={
+                errorImages[book.ID]
+                  ? "/default.png"
+                  : `/data/covers/${book.ID}.jpg`
+              }
               alt={book.Title}
               className="rounded-lg shadow-lg object-cover h-full"
             />
