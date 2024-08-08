@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Book } from "../../../types/Book";
 import booksData from "../../../../public/data/books.json";
+import { useBackNavigation } from "../../../utils/navigation";
+import { handleImageError } from "../../../utils/imageHandlers";
 
 interface DetailPageProps {
   params: {
@@ -18,6 +20,12 @@ export default function DetailPage({ params }: DetailPageProps) {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
   const [books, setBooks] = useState<Book[]>([]);
   const router = useRouter();
+  const handleImageErrorTag = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+    id: string
+  ) => {
+    handleImageError(event, id, setErrorImages);
+  };
 
   useEffect(() => {
     const transformedBooks: Book[] = (booksData as any).map((book: any) => ({
@@ -48,24 +56,6 @@ export default function DetailPage({ params }: DetailPageProps) {
     },
     {}
   );
-
-  const handleBackClick = () => {
-    window.location.href = "/";
-  };
-
-  const handleImageError = (
-    event: React.SyntheticEvent<HTMLImageElement, Event>,
-    id: string
-  ) => {
-    const target = event.currentTarget as HTMLImageElement;
-    setErrorImages((prevErrorImages) => ({
-      ...prevErrorImages,
-      [id]: true,
-    }));
-    if (target.src !== "/default.png") {
-      target.src = "/default.png";
-    }
-  };
 
   const shortenWriterName = (writer: string) => {
     const maxLength = 50;
@@ -100,7 +90,7 @@ export default function DetailPage({ params }: DetailPageProps) {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-5 px-10">
       <button
-        onClick={handleBackClick}
+        onClick={useBackNavigation()}
         className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
       >
         <svg
@@ -154,7 +144,7 @@ export default function DetailPage({ params }: DetailPageProps) {
                       }
                       alt={book.Title}
                       className="w-full h-64 object-cover mb-4 rounded-lg"
-                      onError={(event) => handleImageError(event, book.ID)}
+                      onError={(event) => handleImageErrorTag(event, book.ID)}
                     />
                     <strong className="block whitespace-normal break-words">
                       {book.Title}

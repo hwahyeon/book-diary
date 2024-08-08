@@ -1,13 +1,15 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import Calendar from "react-calendar";
 import { Book } from "../types/Book";
+import { handleImageError } from "../utils/imageHandlers";
+import { useNavigateTo } from "../utils/navigation";
 
 interface CalendarProps {
   books: Book[];
 }
 
-export const StyledCalendarWrapper = styled.div`
+const StyledCalendarWrapper = styled.div`
   .react-calendar {
     width: 100%;
     max-width: 60rem;
@@ -221,23 +223,11 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     const url = `/${year}/${month}`;
     window.location.href = url;
   };
-
-  const handleImageError = (
+  const handleImageErrorTag = (
     event: React.SyntheticEvent<HTMLImageElement, Event>,
     id: string
   ) => {
-    const target = event.currentTarget as HTMLImageElement;
-    setErrorImages((prevErrorImages) => ({
-      ...prevErrorImages,
-      [id]: true,
-    }));
-    if (target.src !== "/default.png") {
-      target.src = "/default.png";
-    }
-  };
-
-  const handleAllListClick = () => {
-    window.location.href = "/all";
+    handleImageError(event, id, setErrorImages);
   };
 
   // Swipe
@@ -290,7 +280,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                           : `/data/covers/${book.ID}.jpg`
                       }
                       alt={book.Title}
-                      onError={(event) => handleImageError(event, book.ID)}
+                      onError={(event) => handleImageErrorTag(event, book.ID)}
                     />
                   </BookCover>
                 ))
@@ -305,7 +295,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                       }
                       alt={booksForDate[0].Title}
                       onError={(event) =>
-                        handleImageError(event, booksForDate[0].ID)
+                        handleImageErrorTag(event, booksForDate[0].ID)
                       }
                     />
                   </BookCover>
@@ -330,7 +320,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
       onTouchEnd={handleTouchEnd}
     >
       <button
-        onClick={handleAllListClick}
+        onClick={useNavigateTo("all")}
         className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
       >
         <svg
