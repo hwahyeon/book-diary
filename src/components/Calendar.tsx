@@ -271,27 +271,32 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
           >
             <BookCoversContainer onClick={goToView}>
               {hoveredDate === date.toDateString() ? (
-                booksForDate.map((book, index) => (
-                  <BookCover key={index}>
-                    <img
-                      src={
-                        errorImages[book.ID]
-                          ? "/default.png"
-                          : `/data/covers/${book.ID}.jpg`
-                      }
-                      alt={book.Title}
-                      onError={(event) => handleImageErrorTag(event, book.ID)}
-                    />
-                  </BookCover>
-                ))
+                booksForDate.map((book, index) => {
+                  const [year, month] = book.Date.split("-"); // Extract year and month
+                  return (
+                    <BookCover key={index}>
+                      <img
+                        src={
+                          errorImages[book.ID]
+                            ? "/covers/default.png"
+                            : `/covers/${year}/${month}/${book.ID}.jpg`
+                        }
+                        alt={book.Title}
+                        onError={(event) => handleImageErrorTag(event, book.ID)}
+                      />
+                    </BookCover>
+                  );
+                })
               ) : (
                 <>
                   <BookCover>
                     <img
                       src={
                         errorImages[booksForDate[0].ID]
-                          ? "/default.png"
-                          : `/data/covers/${booksForDate[0].ID}.jpg`
+                          ? "/covers/default.png"
+                          : `/covers/${booksForDate[0].Date.split("-")[0]}/${
+                              booksForDate[0].Date.split("-")[1]
+                            }/${booksForDate[0].ID}.jpg`
                       }
                       alt={booksForDate[0].Title}
                       onError={(event) =>

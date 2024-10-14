@@ -81,9 +81,11 @@ const BookDetailPage: React.FC = () => {
             <img
               src={
                 errorImages[book.ID]
-                  ? "/default.png"
-                  : `/data/covers/${book.ID}.jpg`
-              }
+                  ? "/covers/default.png"
+                  : `/covers/${book.Date.split("-")[0]}/${
+                    book.Date.split("-")[1]
+                  }/${book.ID}.jpg`
+            }
               alt={book.Title}
               className="rounded-lg shadow-lg object-cover h-full"
               onError={(event) => handleImageErrorTag(event, book.ID)}

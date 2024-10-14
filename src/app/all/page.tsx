@@ -58,34 +58,37 @@ export default function AllListPage() {
       <div>
         <div className="space-y-6">
           <ul className="flex flex-wrap gap-4">
-            {booksData.map((book: Book, index: number) => (
-              <li
-                key={index}
-                className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
-                onClick={() => viewDetail(book)}
-              >
-                <img
-                  src={
-                    errorImages[book.ID]
-                      ? "/default.png"
-                      : `/data/covers/${book.ID}.jpg`
-                  }
-                  alt={book.Title}
-                  className="w-full h-64 object-cover mb-4 rounded-lg"
-                  onError={(event) => handleImageErrorTag(event, book.ID)}
-                />
-                <strong className="block whitespace-normal break-words">
-                  {book.Title}
-                </strong>
-                <br />
-                {shortenWriterName(book.Writer)} <br />
-                <span className="text-sm text-gray-500">
-                  {book.PartOfSeries && book.SeriesNumber
-                    ? `${book.PartOfSeries} ${book.SeriesNumber}`
-                    : book.PartOfSeries || book.SeriesNumber || ""}
-                </span>
-              </li>
-            ))}
+            {booksData.map((book: Book, index: number) => {
+              const [year, month] = book.Date.split("-");
+              return (
+                <li
+                  key={index}
+                  className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
+                  onClick={() => viewDetail(book)}
+                >
+                  <img
+                    src={
+                      errorImages[book.ID]
+                        ? "/covers/default.png"
+                        : `/covers/${year}/${month}/${book.ID}.jpg`
+                    }
+                    alt={book.Title}
+                    className="w-full h-64 object-cover mb-4 rounded-lg"
+                    onError={(event) => handleImageErrorTag(event, book.ID)}
+                  />
+                  <strong className="block whitespace-normal break-words">
+                    {book.Title}
+                  </strong>
+                  <br />
+                  {shortenWriterName(book.Writer)} <br />
+                  <span className="text-sm text-gray-500">
+                    {book.PartOfSeries && book.SeriesNumber
+                      ? `${book.PartOfSeries} ${book.SeriesNumber}`
+                      : book.PartOfSeries || book.SeriesNumber || ""}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
