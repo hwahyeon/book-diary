@@ -1,13 +1,15 @@
-import React, { useState, useRef } from "react";
-import Calendar from "react-calendar";
+import { useState, useRef } from "react";
 import styled from "styled-components";
+import Calendar from "react-calendar";
 import { Book } from "../types/Book";
+import { handleImageError } from "../utils/imageHandlers";
+import { useNavigateTo } from "../utils/navigation";
 
 interface CalendarProps {
   books: Book[];
 }
 
-export const StyledCalendarWrapper = styled.div`
+const StyledCalendarWrapper = styled.div`
   .react-calendar {
     width: 100%;
     max-width: 60rem;
@@ -221,23 +223,11 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     const url = `/${year}/${month}`;
     window.location.href = url;
   };
-
-  const handleImageError = (
+  const handleImageErrorTag = (
     event: React.SyntheticEvent<HTMLImageElement, Event>,
     id: string
   ) => {
-    const target = event.currentTarget as HTMLImageElement;
-    setErrorImages((prevErrorImages) => ({
-      ...prevErrorImages,
-      [id]: true,
-    }));
-    if (target.src !== "/default.png") {
-      target.src = "/default.png";
-    }
-  };
-
-  const handleAllListClick = () => {
-    window.location.href = "/all";
+    handleImageError(event, id, setErrorImages);
   };
 
   // Swipe
@@ -281,31 +271,36 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
           >
             <BookCoversContainer onClick={goToView}>
               {hoveredDate === date.toDateString() ? (
-                booksForDate.map((book, index) => (
-                  <BookCover key={index}>
-                    <img
-                      src={
-                        errorImages[book.ID]
-                          ? "/default.png"
-                          : `/data/covers/${book.ID}.jpg`
-                      }
-                      alt={book.Title}
-                      onError={(event) => handleImageError(event, book.ID)}
-                    />
-                  </BookCover>
-                ))
+                booksForDate.map((book, index) => {
+                  const [year, month] = book.Date.split("-"); // Extract year and month
+                  return (
+                    <BookCover key={index}>
+                      <img
+                        src={
+                          errorImages[book.ID]
+                            ? "/covers/default.png"
+                            : `/covers/${year}/${month}/${book.ID}.jpg`
+                        }
+                        alt={book.Title}
+                        onError={(event) => handleImageErrorTag(event, book.ID)}
+                      />
+                    </BookCover>
+                  );
+                })
               ) : (
                 <>
                   <BookCover>
                     <img
                       src={
                         errorImages[booksForDate[0].ID]
-                          ? "/default.png"
-                          : `/data/covers/${booksForDate[0].ID}.jpg`
+                          ? "/covers/default.png"
+                          : `/covers/${booksForDate[0].Date.split("-")[0]}/${
+                              booksForDate[0].Date.split("-")[1]
+                            }/${booksForDate[0].ID}.jpg`
                       }
                       alt={booksForDate[0].Title}
                       onError={(event) =>
-                        handleImageError(event, booksForDate[0].ID)
+                        handleImageErrorTag(event, booksForDate[0].ID)
                       }
                     />
                   </BookCover>
@@ -330,7 +325,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
       onTouchEnd={handleTouchEnd}
     >
       <button
-        onClick={handleAllListClick}
+        onClick={useNavigateTo("all")}
         className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
       >
         <svg

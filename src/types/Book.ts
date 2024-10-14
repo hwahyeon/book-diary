@@ -3,14 +3,14 @@ export interface Book {
   Date: string;
   Title: string;
   Writer: string;
-  PartOfSeries: string;
-  SeriesNumber: number;
-  PrintLength: number;
-  Language: string;
-  Publisher: string;
-  PublicationDate: string;
-  ISBN: string;
-  Description: string;
-  Ebook: number;
-  Type: string;
+  PartOfSeries?: string;
+  SeriesNumber?: number;
+  PrintLength?: number;
+  Language?: string;
+  Publisher?: string;
+  PublicationDate?: string;
+  ISBN?: string;
+  Description?: string;
+  BookFormat?: number; // 0: normal, 1: e book, 2: audio book
+  Type?: string;
 }

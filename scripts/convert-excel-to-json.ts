@@ -1,23 +1,10 @@
+import { Book } from "../src/types/Book";
+
 const XLSX = require("xlsx");
 const fs = require("fs");
 
 const excelFilePath = "./data/books.xlsx";
 const jsonFilePath = "./public/data/books.json";
-
-interface Book {
-  ID: string;
-  Title: string;
-  Date: string;
-  PartOfSeries?: string;
-  PrintLength?: number;
-  Language?: string;
-  Publisher?: string;
-  PublicationDate?: string;
-  ISBN?: string;
-  Description?: string;
-  Ebook?: number;
-  Type?: string;
-}
 
 const convertExcelToJson = () => {
   const workbook = XLSX.readFile(excelFilePath);

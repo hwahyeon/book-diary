@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import BookCalendar from "../components/Calendar";
-import { Book } from "../types/Book";
 import booksData from "../../public/data/books.json";
+import { Book } from "../types/Book";
 
 const HomePage: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -22,8 +22,8 @@ const HomePage: React.FC = () => {
       PublicationDate: book.PublicationDate,
       ISBN: book.ISBN,
       Description: book.Description,
-      Ebook: book.Ebook,
-      Type: book.Type
+      BookFormat: book.BookFormat,
+      Type: book.Type,
     }));
 
     setBooks(transformedBooks);

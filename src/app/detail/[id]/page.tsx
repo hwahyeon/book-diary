@@ -1,15 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Book } from "../../../types/Book";
+import { useParams } from "next/navigation";
 import booksData from "../../../../public/data/books.json";
-import { useParams } from 'next/navigation';
+import { Book } from "../../../types/Book";
+import { useBackNavigation } from "../../../utils/navigation";
+import { handleImageError } from "../../../utils/imageHandlers";
 
 const BookDetailPage: React.FC = () => {
+  const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
   const [book, setBook] = useState<Book | null>(null);
   const params = useParams();
   const { id } = params;
-  console.log(id)
+
+  const handleImageErrorTag = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+    id: string
+  ) => {
+    handleImageError(event, id, setErrorImages);
+  };
 
   useEffect(() => {
     if (id) {
@@ -26,14 +35,10 @@ const BookDetailPage: React.FC = () => {
     );
   }
 
-  const handleBackClick = () => {
-    window.history.back();
-  };
-
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-14 px-10">
       <button
-        onClick={handleBackClick}
+        onClick={useBackNavigation()}
         className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
       >
         <svg
@@ -74,9 +79,16 @@ const BookDetailPage: React.FC = () => {
         <div className="w-full lg:w-1/3 p-4 flex justify-center">
           <div className="max-w-xs w-full h-70 overflow-hidden flex items-center justify-center">
             <img
-              src={`/data/covers/${book.ID}.jpg`}
+              src={
+                errorImages[book.ID]
+                  ? "/covers/default.png"
+                  : `/covers/${book.Date.split("-")[0]}/${
+                    book.Date.split("-")[1]
+                  }/${book.ID}.jpg`
+            }
               alt={book.Title}
               className="rounded-lg shadow-lg object-cover h-full"
+              onError={(event) => handleImageErrorTag(event, book.ID)}
             />
           </div>
         </div>
