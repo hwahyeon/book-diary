@@ -27,6 +27,12 @@ const BookDetailPage: React.FC = () => {
     }
   }, [id]);
 
+  const backNavigation = useBackNavigation();
+
+  const handleBackNavigation = () => {
+    backNavigation();
+  };
+
   if (!book) {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center py-14 px-10">
@@ -38,7 +44,7 @@ const BookDetailPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-14 px-10">
       <button
-        onClick={useBackNavigation()}
+        onClick={handleBackNavigation}
         className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
       >
         <svg
@@ -83,9 +89,9 @@ const BookDetailPage: React.FC = () => {
                 errorImages[book.ID]
                   ? "/covers/default.png"
                   : `/covers/${book.Date.split("-")[0]}/${
-                    book.Date.split("-")[1]
-                  }/${book.ID}.jpg`
-            }
+                      book.Date.split("-")[1]
+                    }/${book.ID}.jpg`
+              }
               alt={book.Title}
               className="rounded-lg shadow-lg object-cover h-full"
               onError={(event) => handleImageErrorTag(event, book.ID)}

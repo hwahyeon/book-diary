@@ -87,10 +87,16 @@ export default function DetailPage({ params }: DetailPageProps) {
     router.push(`/detail/${date.ID}`);
   };
 
+  const backNavigation = useBackNavigation();
+
+  const handleBackNavigation = () => {
+    backNavigation();
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-5 px-10">
       <button
-        onClick={useBackNavigation()}
+        onClick={handleBackNavigation}
         className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
       >
         <svg
