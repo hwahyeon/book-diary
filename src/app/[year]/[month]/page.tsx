@@ -146,7 +146,7 @@ export default function DetailPage({ params }: DetailPageProps) {
                       src={
                         errorImages[book.ID]
                           ? "/default.png"
-                          : `/data/covers/${book.ID}.jpg`
+                          : `/covers/${year}/${month}/${book.ID}.jpg`
                       }
                       alt={book.Title}
                       className="w-full h-64 object-cover mb-4 rounded-lg"
