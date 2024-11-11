@@ -10,7 +10,7 @@ export interface Book {
   Publisher?: string;
   PublicationDate?: string;
   ISBN?: string;
-  Description?: string;
   BookFormat?: number; // 0: normal, 1: e book, 2: audio book
   Type?: string;
+  Description?: string;
 }
