@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "convert-excel-to-json": "npx ts-node scripts/convert-excel-to-json.ts",
-    "dev": "next dev"
+    "convert-excel-to-json": "node scripts/convert-excel-to-json.js",
+    "dev": "npm run convert-excel-to-json && next dev",
+    "build": "next build",
+    "prebuild": "npm run convert-excel-to-json"
   },
   "dependencies": {
     "@types/styled-components": "^5.1.34",
