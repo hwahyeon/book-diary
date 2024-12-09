@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import booksData from "../../../public/data/books.json";
-import { Book } from "../../types/Book";
-import { handleImageError } from "../../utils/imageHandlers";
-import { useHomeNavigation } from "../../utils/navigation";
+import booksData from "../../../../public/data/books.json";
+import { Book } from "@/types/Book";
+import { handleImageError } from "@/utils/imageHandlers";
+import { useHomeNavigation } from "@/utils/navigation";
 
 export default function AllListPage() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -31,10 +31,10 @@ export default function AllListPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-5 px-10">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-20 px-10">
       <button
         onClick={useHomeNavigation()}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
+        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center pt-28"
       >
         <svg
           className="w-6 h-6 mr-2"

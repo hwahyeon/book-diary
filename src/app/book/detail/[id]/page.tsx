@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import booksData from "../../../../public/data/books.json";
-import { Book } from "../../../types/Book";
-import { useBackNavigation } from "../../../utils/navigation";
-import { handleImageError } from "../../../utils/imageHandlers";
+import booksData from "../../../../../public/data/books.json";
+import { Book } from "@/types/Book";
+import { useBackNavigation } from "@/utils/navigation";
+import { handleImageError } from "@/utils/imageHandlers";
 
 const BookDetailPage: React.FC = () => {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -35,17 +35,17 @@ const BookDetailPage: React.FC = () => {
 
   if (!book) {
     return (
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center py-14 px-10">
+      <div className="min-h-screen bg-gray-100 flex flex-col items-center py-36 px-10">
         Loading...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-14 px-10">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-32 px-10">
       <button
         onClick={handleBackNavigation}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
+        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center pt-28"
       >
         <svg
           className="w-6 h-6 mr-2"
