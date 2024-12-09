@@ -43,26 +43,6 @@ const BookDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-32 px-10">
-      <button
-        onClick={handleBackNavigation}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center pt-28"
-      >
-        <svg
-          className="w-6 h-6 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 19l-7-7 7-7"
-          ></path>
-        </svg>
-        Back
-      </button>
       <div className="w-full max-w-4x1 text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-4">{book.Title}</h1>
         <div className="text-gray-500 space-x-1 mb-2">

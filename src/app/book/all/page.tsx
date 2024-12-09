@@ -32,26 +32,6 @@ export default function AllListPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-20 px-10">
-      <button
-        onClick={useHomeNavigation()}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center pt-28"
-      >
-        <svg
-          className="w-6 h-6 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 19l-7-7 7-7"
-          ></path>
-        </svg>
-        Back to Calendar
-      </button>
       <div className="flex items-center justify-between mb-8 pt-10 px-4">
         <h1 className="text-2xl font-bold mx-4">전체 리스트</h1>
       </div>

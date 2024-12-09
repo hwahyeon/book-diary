@@ -324,26 +324,6 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <button
-        onClick={useNavigateTo("all")}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
-      >
-        <svg
-          className="w-6 h-6 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 19l-7-7 7-7"
-          ></path>
-        </svg>
-        View All Books
-      </button>
       <Calendar
         activeStartDate={activeStartDate}
         onActiveStartDateChange={({ activeStartDate }) => {
