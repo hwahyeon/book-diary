@@ -30,9 +30,8 @@ const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
-      <h1 className="text-3xl font-bold mt-2 mb-6">Book Diary</h1>
-      <BookCalendar books={books} />
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-32">
+      <h1 className="text-3xl font-bold mt-2 mb-6">Home</h1>
     </div>
   );
 };
