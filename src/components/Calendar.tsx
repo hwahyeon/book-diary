@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Calendar from "react-calendar";
 import { Book } from "../types/Book";
 import { handleImageError } from "../utils/imageHandlers";
-import { useNavigateTo } from "../utils/navigation";
 
 interface CalendarProps {
   books: Book[];
@@ -103,6 +102,15 @@ const StyledCalendarWrapper = styled.div`
   .react-calendar__navigation__label {
     font-weight: 500;
     font-size: 18px;
+  }
+
+  .not-current-month {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .not-current-month img {
+    filter: grayscale(100%);
   }
 
   @media (max-width: 768px) {
@@ -257,24 +265,31 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     }
   };
 
+
+
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
+      const isCurrentMonth = activeStartDate.getMonth() === date.getMonth();
       const booksForDate = books.filter(
         (book) => new Date(book.Date).toDateString() === date.toDateString()
       );
-
+  
       if (booksForDate.length > 0) {
         return (
           <CalendarTile
             onMouseEnter={() => setHoveredDate(date.toDateString())}
             onMouseLeave={() => setHoveredDate(null)}
+            className={!isCurrentMonth ? "not-current-month" : ""}
           >
             <BookCoversContainer onClick={goToView}>
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => {
-                  const [year, month] = book.Date.split("-"); // Extract year and month
+                  const [year, month] = book.Date.split("-");
                   return (
-                    <BookCover key={index}>
+                    <BookCover
+                      key={index}
+                      style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
+                    >
                       <img
                         src={
                           errorImages[book.ID]
@@ -289,7 +304,9 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                 })
               ) : (
                 <>
-                  <BookCover>
+                  <BookCover
+                    style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
+                  >
                     <img
                       src={
                         errorImages[booksForDate[0].ID]
