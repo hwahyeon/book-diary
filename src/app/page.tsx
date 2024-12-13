@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import BookCalendar from "../components/Calendar";
-import booksData from "../../public/data/books.json";
+import booksData from "@public/data/books.json";
 import { Book } from "../types/Book";
 
 const HomePage: React.FC = () => {

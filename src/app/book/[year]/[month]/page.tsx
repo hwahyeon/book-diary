@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Book } from "@/types/Book";
-import booksData from "../../../../../public/data/books.json";
+import booksData from "@public/data/books.json";
 import { useBackNavigation } from "@/utils/navigation";
 import { handleImageError } from "@/utils/imageHandlers";
 
