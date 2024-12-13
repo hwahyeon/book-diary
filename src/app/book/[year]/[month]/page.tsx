@@ -84,7 +84,7 @@ export default function DetailPage({ params }: DetailPageProps) {
   };
 
   const viewDetail = (date: Book) => {
-    router.push(`/detail/${date.ID}`);
+    router.push(`/book/detail/${date.ID}`);
   };
 
   const backNavigation = useBackNavigation();
