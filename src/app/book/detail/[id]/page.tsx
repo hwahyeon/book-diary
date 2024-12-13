@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import booksData from "../../../../../public/data/books.json";
+import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
 import { useBackNavigation } from "@/utils/navigation";
 import { handleImageError } from "@/utils/imageHandlers";
+import Link from "next/link";
 
 const BookDetailPage: React.FC = () => {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -46,15 +47,27 @@ const BookDetailPage: React.FC = () => {
       <div className="w-full max-w-4x1 text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-4">{book.Title}</h1>
         <div className="text-gray-500 space-x-1 mb-2">
-          <span>{book.PartOfSeries}</span>
+          <Link
+            href={`/book/all?partOfSeries=${encodeURIComponent(
+              book.PartOfSeries
+            )}`}
+          >
+            <span>{book.PartOfSeries}</span>
+          </Link>
           <span>{book.SeriesNumber}</span>
         </div>
         <div className="text-gray-500 flex flex-wrap justify-center space-x-4 text-sm md:text-base">
           <div className="flex items-center space-x-1 mb-2">
-            <span>{book.Writer}</span>
+            <Link href={`/book/all?writer=${encodeURIComponent(book.Writer)}`}>
+              <span>{book.Writer}</span>
+            </Link>
           </div>
           <div className="flex items-center space-x-1 mb-2">
-            <span>{book.Publisher}</span>
+            <Link
+              href={`/book/all?publisher=${encodeURIComponent(book.Publisher)}`}
+            >
+              <span>{book.Publisher}</span>
+            </Link>
           </div>
           <div className="flex items-center space-x-1 mb-2">
             <span>{book.PublicationDate}</span>
