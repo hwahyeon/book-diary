@@ -228,7 +228,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
 
-    const url = `/${year}/${month}`;
+    const url = `book/${year}/${month}`;
     window.location.href = url;
   };
   const handleImageErrorTag = (
