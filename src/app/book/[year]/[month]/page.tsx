@@ -71,7 +71,7 @@ export default function DetailPage({ params }: DetailPageProps) {
     const newDate = new Date(currentYear, currentMonth - 2, 1);
     const newYear = newDate.getFullYear();
     const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
-    return `/${newYear}/${newMonth}`;
+    return `/book/${newYear}/${newMonth}`;
   };
 
   const getNextMonthLink = () => {
@@ -80,7 +80,7 @@ export default function DetailPage({ params }: DetailPageProps) {
     const newDate = new Date(currentYear, currentMonth, 1);
     const newYear = newDate.getFullYear();
     const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
-    return `/${newYear}/${newMonth}`;
+    return `/book/${newYear}/${newMonth}`;
   };
 
   const viewDetail = (date: Book) => {
