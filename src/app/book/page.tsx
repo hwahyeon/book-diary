@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import BookCalendar from "@/components/Calendar";
-import booksData from "../../../public/data/books.json";
+import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
 
 const HomePage: React.FC = () => {
@@ -31,7 +31,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-32">
-      <h1 className="text-3xl font-bold mt-2 mb-6">Book Diary</h1>
+      <h1 className="text-2xl font-bold mb-6">Book Diary</h1>
       <BookCalendar books={books} />
     </div>
   );
