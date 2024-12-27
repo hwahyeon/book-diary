@@ -58,7 +58,7 @@ const BookDetailPage: React.FC = () => {
           </div>
           <div className="flex items-center space-x-1 mb-2">
             <Link
-              href={`/book/all?publisher=${encodeURIComponent(book.Publisher)}`}
+              href={`/book/all?publisher=${encodeURIComponent(book.Publisher || "")}`}
             >
               <span>{book.Publisher}</span>
             </Link>
