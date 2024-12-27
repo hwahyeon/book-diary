@@ -13,6 +13,6 @@ export const navigation: Navigation[] = [
       { href: "/book/all", label: "View All Books" },
     ],
   },
-  { href: "/paper", label: "Papers" },
+  // { href: "/paper", label: "Papers" },
   // { href: "/movie", label: "Movies" },
 ];

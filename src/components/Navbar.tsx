@@ -10,7 +10,7 @@ export const Navbar: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLLIElement>(null);
 
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
@@ -36,7 +36,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="w-full bg-white dark:bg-gray-900 transition-all fixed top-0 left-0 right-0 border-b border-gray-200 dark:border-gray-700 h-20 z-20">
+      <header className="w-full bg-background/60 dark:bg-gray-900/80 backdrop-blur-sm transition-all fixed top-0 left-0 right-0 border-b border-gray-200 dark:border-gray-700 h-16 z-20">
         <div className="flex justify-between items-center max-w-screen-xl mx-auto h-full px-8">
           <div className="hidden lg:flex items-center space-x-8">
             <button
@@ -93,13 +93,17 @@ export const Navbar: React.FC = () => {
               aria-label="GitHub"
             >
               <Github className="w-6 h-6" />
-            </a> */}
-            {/* <button
+            </a>
+            <button
               onClick={toggleDarkMode}
               className="flex items-center justify-center p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
               aria-label="Toggle Dark Mode"
             >
-              {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+              {isDarkMode ? (
+                <Sun className="w-6 h-6" />
+              ) : (
+                <Moon className="w-6 h-6" />
+              )}
             </button> */}
             <Menu
               className="w-6 h-6 cursor-pointer hover:text-primary transition-colors"
