@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
-import { useBackNavigation } from "@/utils/navigation";
 import { handleImageError } from "@/utils/imageHandlers";
 import Link from "next/link";
 
@@ -28,11 +27,6 @@ const BookDetailPage: React.FC = () => {
     }
   }, [id]);
 
-  const backNavigation = useBackNavigation();
-
-  const handleBackNavigation = () => {
-    backNavigation();
-  };
 
   if (!book) {
     return (
