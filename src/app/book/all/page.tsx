@@ -1,15 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import booksData from "../../../../public/data/books.json";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
 import { handleImageError } from "@/utils/imageHandlers";
-import { useHomeNavigation } from "@/utils/navigation";
 
 export default function AllListPage() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
+  const [filters, setFilters] = useState({
+    search: "",
+    writer: "",
+    partOfSeries: "",
+    language: "",
+    publisher: "",
+  });
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    setFilters({
+      search: params.get("search") || "",
+      writer: params.get("writer") || "",
+      partOfSeries: params.get("partOfSeries") || "",
+      language: params.get("language") || "",
+      publisher: params.get("publisher") || "",
+    });
+  }, [searchParams]);
 
   const handleImageErrorTag = (
     event: React.SyntheticEvent<HTMLImageElement, Event>,
@@ -20,25 +38,125 @@ export default function AllListPage() {
 
   const shortenWriterName = (writer: string) => {
     const maxLength = 50;
-    if (writer.length > maxLength) {
-      return writer.substring(0, maxLength) + "...";
-    }
-    return writer;
+    return writer.length > maxLength
+      ? writer.substring(0, maxLength) + "..."
+      : writer;
   };
 
-  const viewDetail = (date: Book) => {
-    router.push(`/detail/${date.ID}`);
+  const viewDetail = (book: Book) => {
+    router.push(`/book/detail/${book.ID}`);
   };
+
+  const updateQueryParams = () => {
+    const query = new URLSearchParams();
+    if (filters.search) query.set("search", filters.search);
+    if (filters.writer) query.set("writer", filters.writer);
+    if (filters.partOfSeries) query.set("partOfSeries", filters.partOfSeries);
+    if (filters.language) query.set("language", filters.language);
+    if (filters.publisher) query.set("publisher", filters.publisher);
+    router.push(`?${query.toString()}`);
+  };
+
+  const filteredBooks = booksData.filter((book: Book) => {
+    const matchesSearch =
+      !filters.search ||
+      book.Title.includes(filters.search) ||
+      book.Writer.includes(filters.search) ||
+      (book.Publisher && book.Publisher.includes(filters.search)) ||
+      (book.PartOfSeries && book.PartOfSeries.includes(filters.search));
+
+    const matchesLanguage =
+      !filters.language ||
+      (book.Language &&
+        book.Language.split(" · ").some((lang) => lang === filters.language));
+
+    return (
+      matchesSearch &&
+      matchesLanguage &&
+      (!filters.writer || book.Writer.includes(filters.writer)) &&
+      (!filters.partOfSeries ||
+        book.PartOfSeries?.includes(filters.partOfSeries)) &&
+      (!filters.publisher || book.Publisher === filters.publisher)
+    );
+  });
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-20 px-10">
+    <div className="min-h-screen bg-background flex flex-col items-center py-20 px-10">
       <div className="flex items-center justify-between mb-8 pt-10 px-4">
-        <h1 className="text-2xl font-bold mx-4">전체 리스트</h1>
+        <h1 className="text-2xl font-bold mx-4">All Books</h1>
       </div>
+      <div className="mb-8 w-full">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="border px-4 py-2 rounded w-full focus:outline-none focus:ring focus:ring-blue-300"
+            value={filters.search}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, search: e.target.value }))
+            }
+          />
+          <button
+            className="bg-accent text-white px-4 py-2 rounded w-full sm:w-auto hover:bg-accent/80 focus:outline-none focus:ring focus:ring-blue-300"
+            onClick={updateQueryParams}
+          >
+            Search
+          </button>
+        </div>
+      </div>
+
+      <div className="mb-8 flex flex-wrap gap-4">
+        <input
+          type="text"
+          placeholder="Writer"
+          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
+          value={filters.writer}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, writer: e.target.value }))
+          }
+        />
+        <input
+          type="text"
+          placeholder="Part of Series"
+          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
+          value={filters.partOfSeries}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, partOfSeries: e.target.value }))
+          }
+        />
+        <select
+          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
+          value={filters.language}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, language: e.target.value }))
+          }
+        >
+          <option value="">Select Language</option>
+          <option value="한국어">한국어</option>
+          <option value="English">English</option>
+          <option value="Deutsch">Deutsch</option>
+        </select>
+        <input
+          type="text"
+          placeholder="Publisher"
+          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
+          value={filters.publisher}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, publisher: e.target.value }))
+          }
+        />
+        <button
+          className="bg-accent text-white px-4 py-2 rounded w-full sm:w-auto hover:bg-accent/70 focus:outline-none focus:ring focus:ring-blue-300"
+          onClick={updateQueryParams}
+        >
+          Apply Filters
+        </button>
+      </div>
+
       <div>
         <div className="space-y-6">
           <ul className="flex flex-wrap gap-4">
-            {booksData.map((book: Book, index: number) => {
+            {filteredBooks.map((book: Book, index: number) => {
               const [year, month] = book.Date.split("-");
               return (
                 <li
