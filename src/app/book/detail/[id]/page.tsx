@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import booksData from "../../../../public/data/books.json";
-import { Book } from "../../../types/Book";
-import { useBackNavigation } from "../../../utils/navigation";
-import { handleImageError } from "../../../utils/imageHandlers";
+import booksData from "@public/data/books.json";
+import { Book } from "@/types/Book";
+import { handleImageError } from "@/utils/imageHandlers";
+import Link from "next/link";
 
 const BookDetailPage: React.FC = () => {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -27,54 +27,41 @@ const BookDetailPage: React.FC = () => {
     }
   }, [id]);
 
-  const backNavigation = useBackNavigation();
-
-  const handleBackNavigation = () => {
-    backNavigation();
-  };
 
   if (!book) {
     return (
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center py-14 px-10">
+      <div className="min-h-screen bg-background flex flex-col items-center py-36 px-10">
         Loading...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-14 px-10">
-      <button
-        onClick={handleBackNavigation}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 mb-4 flex items-center"
-      >
-        <svg
-          className="w-6 h-6 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 19l-7-7 7-7"
-          ></path>
-        </svg>
-        Back
-      </button>
+    <div className="min-h-screen bg-background flex flex-col items-center pt-32 px-10">
       <div className="w-full max-w-4x1 text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-4">{book.Title}</h1>
         <div className="text-gray-500 space-x-1 mb-2">
-          <span>{book.PartOfSeries}</span>
+          <Link
+            href={`/book/all?partOfSeries=${encodeURIComponent(
+              book.PartOfSeries || ""
+            )}`}
+          >
+            <span>{book.PartOfSeries}</span>
+          </Link>
           <span>{book.SeriesNumber}</span>
         </div>
         <div className="text-gray-500 flex flex-wrap justify-center space-x-4 text-sm md:text-base">
           <div className="flex items-center space-x-1 mb-2">
-            <span>{book.Writer}</span>
+            <Link href={`/book/all?writer=${encodeURIComponent(book.Writer)}`}>
+              <span>{book.Writer}</span>
+            </Link>
           </div>
           <div className="flex items-center space-x-1 mb-2">
-            <span>{book.Publisher}</span>
+            <Link
+              href={`/book/all?publisher=${encodeURIComponent(book.Publisher || "")}`}
+            >
+              <span>{book.Publisher}</span>
+            </Link>
           </div>
           <div className="flex items-center space-x-1 mb-2">
             <span>{book.PublicationDate}</span>
