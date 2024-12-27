@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BookCalendar from "../components/Calendar";
 import booksData from "@public/data/books.json";
 import { Book } from "../types/Book";
+import { LatestPost } from "@/components/Latest";
+import { FeaturePost } from "@/components/Feature";
+import { IntroPost } from "@/components/Intro";
 
 const HomePage: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -30,8 +32,10 @@ const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-32">
-      <h1 className="text-3xl font-bold mt-2 mb-6">Home</h1>
+    <div className="bg-background pt-16 px-14">
+      <IntroPost />
+      <FeaturePost />
+      <LatestPost posts={books} />
     </div>
   );
 };
