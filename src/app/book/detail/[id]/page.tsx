@@ -49,7 +49,7 @@ const BookDetailPage: React.FC = () => {
         <div className="text-gray-500 space-x-1 mb-2">
           <Link
             href={`/book/all?partOfSeries=${encodeURIComponent(
-              book.PartOfSeries
+              book.PartOfSeries || ""
             )}`}
           >
             <span>{book.PartOfSeries}</span>
