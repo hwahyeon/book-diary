@@ -1,12 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
 import { handleImageError } from "@/utils/imageHandlers";
 
-export default function AllListPage() {
+function AllListPageContent() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
   const [filters, setFilters] = useState({
     search: "",
@@ -191,5 +192,13 @@ export default function AllListPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AllListPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AllListPageContent />
+    </Suspense>
   );
 }
