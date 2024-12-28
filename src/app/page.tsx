@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-background pt-16 px-14">
+    <div className="bg-background pt-16 px-14 max-w-screen-xl mx-auto">
       <IntroPost />
       <FeaturePost />
       <LatestPost posts={books} />
