@@ -20,9 +20,27 @@ const convertExcelToJson = () => {
       obj[header] = row[index] !== undefined ? row[index] : "";
     });
 
-    if (obj["SeriesNumber"]) obj["SeriesNumber"] = Number(obj["SeriesNumber"]);
-    if (obj["PrintLength"]) obj["PrintLength"] = Number(obj["PrintLength"]);
-    if (obj["Ebook"]) obj["Ebook"] = Number(obj["Ebook"]);
+    if (obj["SeriesNumber"] !== undefined) {
+      obj["SeriesNumber"] = isNaN(Number(obj["SeriesNumber"])) ? 0 : Number(obj["SeriesNumber"]);
+    } else {
+      obj["SeriesNumber"] = 0;
+    }
+
+    if (obj["PrintLength"] !== undefined) {
+      obj["PrintLength"] = isNaN(Number(obj["PrintLength"])) ? 0 : Number(obj["PrintLength"]);
+    } else {
+      obj["PrintLength"] = 0;
+    }
+
+    if (obj["BookFormat"] !== undefined) {
+      obj["BookFormat"] = isNaN(Number(obj["BookFormat"])) ? 0 : Number(obj["BookFormat"]);
+    } else {
+      obj["BookFormat"] = 0;
+    }
+
+    if (obj["Ebook"] !== undefined) {
+      obj["Ebook"] = Number(obj["Ebook"]);
+    }
 
     return obj;
   });
