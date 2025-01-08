@@ -77,9 +77,9 @@ const StyledCalendarWrapper = styled.div`
   .react-calendar__tile--now {
     abbr {
       font-weight: 800;
-      background-color: #5f98f6;
+      background-color: #e88b71;
       color: white;
-      border-radius: 50%;
+      border-radius: 30%;
       padding: 5px;
       display: inline-block;
     }
@@ -96,7 +96,7 @@ const StyledCalendarWrapper = styled.div`
   }
 
   .react-calendar__tile--active {
-    background-color: #3b82f6;
+    background-color: #ffc0ae;
     color: white;
   }
 
@@ -185,7 +185,7 @@ const BookCount = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
-  background: rgba(0, 0, 0, 0.7);
+  background: #e88b71;
   color: #fff;
   border-radius: 50%;
   padding: 0.2rem 0.4rem;
@@ -213,7 +213,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     }
   };
 
-  const goToView = () => {
+  const goToView = (bookCount: number, bookIDs: string[]) => {
     if (!hoveredDate) {
       console.error("No date hovered");
       return;
@@ -228,10 +228,17 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
 
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
-    const url = `book/${year}/${month}`;
-    window.location.href = url;
+    if (bookCount > 1) {
+      const url = `book/${year}/${month}/${day}`;
+      window.location.href = url;
+    } else {
+      const url = `book/detail/${bookIDs[0]}`;
+      window.location.href = url;
+    }
   };
+
   const handleImageErrorTag = (
     event: React.SyntheticEvent<HTMLImageElement, Event>,
     id: string
@@ -280,7 +287,14 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
             onMouseLeave={() => setHoveredDate(null)}
             className={!isCurrentMonth ? "not-current-month" : ""}
           >
-            <BookCoversContainer onClick={goToView}>
+            <BookCoversContainer
+              onClick={() =>
+                goToView(
+                  booksForDate.length,
+                  booksForDate.map((book) => book.ID)
+                )
+              }
+            >
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => {
                   const [year, month] = book.Date.split("-");
@@ -292,21 +306,24 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                     <BookCover
                       key={index}
                       style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
+                      className="relative w-full h-64"
                     >
                       <Image
                         src={imageSrc}
                         alt={book.Title || "Default Image"}
                         fill
                         sizes="(max-width: 768px) 100vw, 200px"
-                        className="rounded-lg object-cover"
-                        unoptimized
+                        className="object-cover"
                       />
                     </BookCover>
                   );
                 })
               ) : (
                 <>
-                  <BookCover style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}>
+                  <BookCover
+                    style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
+                    className="relative w-full h-64"
+                  >
                     <Image
                       src={
                         errorImages[booksForDate[0].ID]
@@ -318,8 +335,7 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                       alt={booksForDate[0].Title || "Default Image"}
                       fill
                       sizes="(max-width: 768px) 100vw, 200px"
-                      className="rounded-lg object-cover"
-                      unoptimized
+                      className="object-cover"
                     />
                   </BookCover>
                   {booksForDate.length > 1 && (
