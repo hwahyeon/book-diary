@@ -58,7 +58,15 @@ function AllListPageContent() {
     router.push(`?${query.toString()}`);
   };
 
-  const filteredBooks = booksData.filter((book: Book) => {
+  const normalizedBooksData = booksData.map((book) => ({
+    ...book,
+    BookFormat:
+      typeof book.BookFormat === "string"
+        ? parseInt(book.BookFormat, 10)
+        : book.BookFormat,
+  }));
+
+  const filteredBooks = normalizedBooksData.filter((book: Book) => {
     const matchesSearch =
       !filters.search ||
       book.Title.includes(filters.search) ||
@@ -74,8 +82,8 @@ function AllListPageContent() {
         book.Language.split(" · ").some((lang) => lang === filters.language));
 
     return (
-      !!matchesSearch &&
-      !!matchesLanguage &&
+      matchesSearch &&
+      matchesLanguage &&
       (!filters.writer || book.Writer.includes(filters.writer)) &&
       (!filters.partOfSeries ||
         book.PartOfSeries?.includes(filters.partOfSeries)) &&
