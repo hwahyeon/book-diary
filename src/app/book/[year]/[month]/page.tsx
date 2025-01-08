@@ -8,6 +8,7 @@ import booksData from "@public/data/books.json";
 import { useBackNavigation } from "@/utils/navigation";
 import { handleImageError } from "@/utils/imageHandlers";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DetailPageProps {
   params: {
@@ -95,11 +96,11 @@ export default function DetailPage({ params }: DetailPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-20 px-10">
+    <div className="min-h-screen bg-background flex flex-col items-center py-20 px-10">
       <div className="flex items-center justify-between mb-8 pt-10 px-4">
         <Link href={getPrevMonthLink()}>
           <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer mr-4">
-            &lt;
+            <ChevronLeft className="w-6 h-6" />
           </div>
         </Link>
         <h1 className="text-2xl font-bold mx-4">
@@ -107,7 +108,7 @@ export default function DetailPage({ params }: DetailPageProps) {
         </h1>
         <Link href={getNextMonthLink()}>
           <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer ml-4">
-            &gt;
+            <ChevronRight className="w-6 h-6" />
           </div>
         </Link>
       </div>
