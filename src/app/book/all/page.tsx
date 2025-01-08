@@ -63,8 +63,10 @@ function AllListPageContent() {
       !filters.search ||
       book.Title.includes(filters.search) ||
       book.Writer.includes(filters.search) ||
-      (book.Publisher && book.Publisher.includes(filters.search)) ||
-      (book.PartOfSeries && book.PartOfSeries.includes(filters.search));
+      book.Publisher?.includes(filters.search) ||
+      false ||
+      book.PartOfSeries?.includes(filters.search) ||
+      false;
 
     const matchesLanguage =
       !filters.language ||
@@ -72,8 +74,8 @@ function AllListPageContent() {
         book.Language.split(" · ").some((lang) => lang === filters.language));
 
     return (
-      matchesSearch &&
-      matchesLanguage &&
+      !!matchesSearch &&
+      !!matchesLanguage &&
       (!filters.writer || book.Writer.includes(filters.writer)) &&
       (!filters.partOfSeries ||
         book.PartOfSeries?.includes(filters.partOfSeries)) &&
