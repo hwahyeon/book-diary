@@ -6,6 +6,7 @@ import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
 import { handleImageError } from "@/utils/imageHandlers";
 import Link from "next/link";
+import Image from "next/image";
 
 const BookDetailPage: React.FC = () => {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -26,7 +27,6 @@ const BookDetailPage: React.FC = () => {
       setBook(foundBook || null);
     }
   }, [id]);
-
 
   if (!book) {
     return (
@@ -58,7 +58,9 @@ const BookDetailPage: React.FC = () => {
           </div>
           <div className="flex items-center space-x-1 mb-2">
             <Link
-              href={`/book/all?publisher=${encodeURIComponent(book.Publisher || "")}`}
+              href={`/book/all?publisher=${encodeURIComponent(
+                book.Publisher || ""
+              )}`}
             >
               <span>{book.Publisher}</span>
             </Link>
@@ -71,7 +73,7 @@ const BookDetailPage: React.FC = () => {
       <div className="w-full max-w-4xl flex flex-col lg:flex-row">
         <div className="w-full lg:w-1/3 p-4 flex justify-center">
           <div className="max-w-xs w-full h-70 overflow-hidden flex items-center justify-center">
-            <img
+            <Image
               src={
                 errorImages[book.ID]
                   ? "/covers/default.png"
@@ -79,8 +81,11 @@ const BookDetailPage: React.FC = () => {
                       book.Date.split("-")[1]
                     }/${book.ID}.jpg`
               }
-              alt={book.Title}
+              alt={book.Title || "Default Image"}
               className="rounded-lg shadow-lg object-cover h-full"
+              width={256}
+              height={256}
+              unoptimized
               onError={(event) => handleImageErrorTag(event, book.ID)}
             />
           </div>

@@ -7,6 +7,7 @@ import { Book } from "@/types/Book";
 import booksData from "@public/data/books.json";
 import { useBackNavigation } from "@/utils/navigation";
 import { handleImageError } from "@/utils/imageHandlers";
+import Image from "next/image";
 
 interface DetailPageProps {
   params: {
@@ -122,14 +123,17 @@ export default function DetailPage({ params }: DetailPageProps) {
                     className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
                     onClick={() => viewDetail(book)}
                   >
-                    <img
+                    <Image
                       src={
                         errorImages[book.ID]
                           ? "/default.png"
                           : `/covers/${year}/${month}/${book.ID}.jpg`
                       }
-                      alt={book.Title}
+                      alt={book.Title || "Default Image"}
                       className="w-full h-64 object-cover mb-4 rounded-lg"
+                      width={256}
+                      height={256}
+                      unoptimized
                       onError={(event) => handleImageErrorTag(event, book.ID)}
                     />
                     <strong className="block whitespace-normal break-words">

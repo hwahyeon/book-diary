@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Calendar from "react-calendar";
 import { Book } from "../types/Book";
 import { handleImageError } from "../utils/imageHandlers";
+import Image from "next/image";
 
 interface CalendarProps {
   books: Book[];
@@ -265,15 +266,13 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     }
   };
 
-
-
   const getTileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
       const isCurrentMonth = activeStartDate.getMonth() === date.getMonth();
       const booksForDate = books.filter(
         (book) => new Date(book.Date).toDateString() === date.toDateString()
       );
-  
+
       if (booksForDate.length > 0) {
         return (
           <CalendarTile
@@ -285,29 +284,30 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
               {hoveredDate === date.toDateString() ? (
                 booksForDate.map((book, index) => {
                   const [year, month] = book.Date.split("-");
+                  const imageSrc = errorImages[book.ID]
+                    ? "/covers/default.png"
+                    : `/covers/${year}/${month}/${book.ID}.jpg`;
+
                   return (
                     <BookCover
                       key={index}
                       style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
                     >
-                      <img
-                        src={
-                          errorImages[book.ID]
-                            ? "/covers/default.png"
-                            : `/covers/${year}/${month}/${book.ID}.jpg`
-                        }
-                        alt={book.Title}
-                        onError={(event) => handleImageErrorTag(event, book.ID)}
+                      <Image
+                        src={imageSrc}
+                        alt={book.Title || "Default Image"}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 200px"
+                        className="rounded-lg object-cover"
+                        unoptimized
                       />
                     </BookCover>
                   );
                 })
               ) : (
                 <>
-                  <BookCover
-                    style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
-                  >
-                    <img
+                  <BookCover style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}>
+                    <Image
                       src={
                         errorImages[booksForDate[0].ID]
                           ? "/covers/default.png"
@@ -315,10 +315,11 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                               booksForDate[0].Date.split("-")[1]
                             }/${booksForDate[0].ID}.jpg`
                       }
-                      alt={booksForDate[0].Title}
-                      onError={(event) =>
-                        handleImageErrorTag(event, booksForDate[0].ID)
-                      }
+                      alt={booksForDate[0].Title || "Default Image"}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 200px"
+                      className="rounded-lg object-cover"
+                      unoptimized
                     />
                   </BookCover>
                   {booksForDate.length > 1 && (
