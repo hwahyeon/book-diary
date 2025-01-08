@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
 import { handleImageError } from "@/utils/imageHandlers";
+import Image from "next/image";
 
 function AllListPageContent() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -177,14 +178,17 @@ function AllListPageContent() {
                   className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
                   onClick={() => viewDetail(book)}
                 >
-                  <img
+                  <Image
                     src={
                       errorImages[book.ID]
                         ? "/covers/default.png"
                         : `/covers/${year}/${month}/${book.ID}.jpg`
                     }
-                    alt={book.Title}
+                    alt={book.Title || "Default Image"}
                     className="w-full h-64 object-cover mb-4 rounded-lg"
+                    width={256}
+                    height={256}
+                    unoptimized
                     onError={(event) => handleImageErrorTag(event, book.ID)}
                   />
                   <strong className="block whitespace-normal break-words">

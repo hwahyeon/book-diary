@@ -21,7 +21,6 @@ export function FeaturePost() {
               src="/cover.jpg"
               alt="Featured Post"
               className="rounded-lg object-cover"
-              layout="intrinsic"
               width={500}
               height={300}
             />

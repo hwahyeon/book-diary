@@ -22,7 +22,7 @@ export function IntroPost() {
             <Image
               src="/cover1.jpg"
               alt="The timeless classics everyone should read"
-              layout="fill"
+              fill
               className="object-cover"
             />
             <div className="p-4 bg-white">
@@ -37,7 +37,7 @@ export function IntroPost() {
             <Image
               src="/cover2.jpg"
               alt="The timeless classics everyone should read"
-              layout="fill"
+              fill
               className="object-cover"
             />
             <div className="p-4 bg-white">
@@ -52,7 +52,7 @@ export function IntroPost() {
             <Image
               src="/cover3.jpg"
               alt="The timeless classics everyone should read"
-              layout="fill"
+              fill
               className="object-cover"
             />
             <div className="p-4 bg-white">
