@@ -23,7 +23,7 @@ export function LatestPost({ posts }: { posts: Book[] | undefined }) {
                   src={`/covers/${year}/${month}/${book.ID}.jpg`}
                   alt={book.Title}
                   className="rounded-lg object-cover"
-                  layout="fill"
+                  fill
                 />
               </div>
               <h3 className="text-lg font-bold mt-4">{book.Title}</h3>
