@@ -58,12 +58,14 @@ function AllListPageContent() {
     router.push(`?${query.toString()}`);
   };
 
-  const normalizedBooksData = booksData.map((book) => ({
+  const normalizedBooksData: Book[] = booksData.map((book) => ({
     ...book,
     BookFormat:
-      typeof book.BookFormat === "string"
-        ? parseInt(book.BookFormat, 10)
-        : book.BookFormat,
+      typeof book.BookFormat === "number"
+        ? book.BookFormat
+        : typeof book.BookFormat === "string"
+        ? parseInt(book.BookFormat, 10) || 0
+        : 0,
   }));
 
   const filteredBooks = normalizedBooksData.filter((book: Book) => {
@@ -82,8 +84,8 @@ function AllListPageContent() {
         book.Language.split(" · ").some((lang) => lang === filters.language));
 
     return (
-      matchesSearch &&
-      matchesLanguage &&
+      !!matchesSearch &&
+      !!matchesLanguage &&
       (!filters.writer || book.Writer.includes(filters.writer)) &&
       (!filters.partOfSeries ||
         book.PartOfSeries?.includes(filters.partOfSeries)) &&
