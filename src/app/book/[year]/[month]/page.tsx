@@ -103,7 +103,7 @@ export default function DetailPage({ params }: DetailPageProps) {
           </div>
         </Link>
         <h1 className="text-2xl font-bold mx-4">
-          {year}년 {month}월
+          {year}. {month}.
         </h1>
         <Link href={getNextMonthLink()}>
           <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer ml-4">
