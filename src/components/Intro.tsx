@@ -5,7 +5,7 @@ export function IntroPost() {
     <div className="bg-background text-black">
       <section className="relative flex flex-col md:flex-row justify-between px-6 md:px-10 py-20 md:py-36">
         {/* Left Section */}
-        <div className="max-w-lg mb-10 md:mb-0">
+        <div className="max-w-lg mb-10 md:mb-0 pr-3">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
             Every book leaves its mark on me.
           </h1>
@@ -24,6 +24,7 @@ export function IntroPost() {
               alt="The timeless classics everyone should read"
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             <div className="p-4 bg-white">
               <h3 className="text-sm font-semibold">-</h3>
@@ -39,6 +40,7 @@ export function IntroPost() {
               alt="The timeless classics everyone should read"
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             <div className="p-4 bg-white">
               <h3 className="text-sm font-semibold">-</h3>
@@ -54,6 +56,7 @@ export function IntroPost() {
               alt="The timeless classics everyone should read"
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             <div className="p-4 bg-white">
               <h3 className="text-sm font-semibold">-</h3>

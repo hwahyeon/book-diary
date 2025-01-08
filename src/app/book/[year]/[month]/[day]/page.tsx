@@ -5,20 +5,25 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Book } from "@/types/Book";
 import booksData from "@public/data/books.json";
-import { useBackNavigation } from "@/utils/navigation";
 import { handleImageError } from "@/utils/imageHandlers";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 interface DetailPageProps {
   params: {
     year: string;
     month: string;
+    day: string;
   };
 }
 
 export default function DetailPage({ params }: DetailPageProps) {
-  const { year, month } = params;
+  const { year, month, day } = params;
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
   const [books, setBooks] = useState<Book[]>([]);
   const router = useRouter();
@@ -43,7 +48,8 @@ export default function DetailPage({ params }: DetailPageProps) {
     const bookDate = new Date(book.Date);
     return (
       bookDate.getFullYear() === parseInt(year) &&
-      bookDate.getMonth() + 1 === parseInt(month)
+      bookDate.getMonth() + 1 === parseInt(month) &&
+      bookDate.getDate() === parseInt(day)
     );
   });
 
@@ -73,7 +79,7 @@ export default function DetailPage({ params }: DetailPageProps) {
     const newDate = new Date(currentYear, currentMonth - 2, 1);
     const newYear = newDate.getFullYear();
     const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
-    return `/book/${newYear}/${newMonth}`;
+    return `/book/${newYear}/${newMonth}/${day}`;
   };
 
   const getNextMonthLink = () => {
@@ -82,33 +88,61 @@ export default function DetailPage({ params }: DetailPageProps) {
     const newDate = new Date(currentYear, currentMonth, 1);
     const newYear = newDate.getFullYear();
     const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
-    return `/book/${newYear}/${newMonth}`;
+    return `/book/${newYear}/${newMonth}/${day}`;
+  };
+
+  const getPrevDayLink = () => {
+    const currentYear = parseInt(year);
+    const currentMonth = parseInt(month) - 1;
+    const currentDay = parseInt(day);
+
+    const newDate = new Date(currentYear, currentMonth, currentDay - 1);
+    const newYear = newDate.getFullYear();
+    const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
+    const newDay = String(newDate.getDate()).padStart(2, "0");
+    return `/book/${newYear}/${newMonth}/${newDay}`;
+  };
+
+  const getNextDayLink = () => {
+    const currentYear = parseInt(year);
+    const currentMonth = parseInt(month) - 1;
+    const currentDay = parseInt(day);
+
+    const newDate = new Date(currentYear, currentMonth, currentDay + 1);
+    const newYear = newDate.getFullYear();
+    const newMonth = String(newDate.getMonth() + 1).padStart(2, "0");
+    const newDay = String(newDate.getDate()).padStart(2, "0");
+    return `/book/${newYear}/${newMonth}/${newDay}`;
   };
 
   const viewDetail = (date: Book) => {
     router.push(`/book/detail/${date.ID}`);
   };
 
-  const backNavigation = useBackNavigation();
-
-  const handleBackNavigation = () => {
-    backNavigation();
-  };
-
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center py-20 px-10">
+    <div className="min-h-screen bg-background flex flex-col items-center pb-20 px-10">
       <div className="flex items-center justify-between mb-8 pt-10 px-4">
         <Link href={getPrevMonthLink()}>
+          <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer mr-4">
+            <ChevronsLeft className="w-6 h-6" />
+          </div>
+        </Link>
+        <Link href={getPrevDayLink()}>
           <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer mr-4">
             <ChevronLeft className="w-6 h-6" />
           </div>
         </Link>
         <h1 className="text-2xl font-bold mx-4">
-          {year}. {month}.
+          {year}. {month}. {day}.
         </h1>
-        <Link href={getNextMonthLink()}>
+        <Link href={getNextDayLink()}>
           <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer ml-4">
             <ChevronRight className="w-6 h-6" />
+          </div>
+        </Link>
+        <Link href={getNextMonthLink()}>
+          <div className="text-2xl text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer ml-4">
+            <ChevronsRight className="w-6 h-6" />
           </div>
         </Link>
       </div>
@@ -116,7 +150,7 @@ export default function DetailPage({ params }: DetailPageProps) {
         <div className="space-y-6">
           {Object.keys(booksByDate).map((day) => (
             <div key={day}>
-              <h3 className="text-lg font-semibold mb-2">{day}일</h3>
+              {/* <h3 className="text-lg font-semibold mb-2">{day}</h3> */}
               <ul className="flex flex-wrap gap-4">
                 {booksByDate[day].map((book: Book, index: number) => (
                   <li

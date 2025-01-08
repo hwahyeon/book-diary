@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowLeft, Github, Moon, Sun, Menu, ChevronDown } from "lucide-react";
+import { Github, Moon, Sun, Menu, ChevronDown, Home } from "lucide-react";
 import { navigation } from "../data/navigation";
 import Sidebar from "./Sidebar";
 
@@ -38,16 +38,16 @@ export const Navbar: React.FC = () => {
     <>
       <header className="w-full bg-background/60 dark:bg-gray-900/80 backdrop-blur-sm transition-all fixed top-0 left-0 right-0 border-b border-gray-200 dark:border-gray-700 h-16 z-20">
         <div className="flex justify-between items-center max-w-screen-xl mx-auto h-full px-8">
-          <div className="hidden lg:flex items-center space-x-8">
-            <button
-              onClick={() => window.history.back()}
+          <div className="lg:flex items-center space-x-8">
+            <Link
+              href="/"
               className="flex items-center justify-center p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-              aria-label="Go Back"
+              aria-label="Go Home"
             >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
+              <Home className="w-6 h-6" />
+            </Link>
 
-            <nav>
+            <nav className="hidden lg:flex items-center space-x-8">
               <ul className="flex space-x-8 items-center">
                 {navigation.map(({ href, label, submenu }) => (
                   <li

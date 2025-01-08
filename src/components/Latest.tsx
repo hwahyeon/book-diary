@@ -14,7 +14,7 @@ export function LatestPost({ posts }: { posts: Book[] | undefined }) {
         {latestBooks.map((book) => {
           const date = new Date(book.Date);
           const year = date.getFullYear();
-          const month = String(date.getMonth() + 1).padStart(2, "0"); 
+          const month = String(date.getMonth() + 1).padStart(2, "0");
 
           return (
             <div key={book.ID} className="bg-white rounded-lg shadow p-4">
@@ -24,6 +24,7 @@ export function LatestPost({ posts }: { posts: Book[] | undefined }) {
                   alt={book.Title}
                   className="rounded-lg object-cover"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <h3 className="text-lg font-bold mt-4">{book.Title}</h3>
