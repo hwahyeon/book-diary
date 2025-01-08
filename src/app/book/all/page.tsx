@@ -99,7 +99,7 @@ function AllListPageContent() {
       <div className="flex items-center justify-between mb-8 pt-10 px-4">
         <h1 className="text-2xl font-bold mx-4">All Books</h1>
       </div>
-      <div className="mb-8 w-full">
+      <div className="mb-8 w-full max-w-screen-lg">
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="text"
@@ -110,61 +110,69 @@ function AllListPageContent() {
               setFilters((prev) => ({ ...prev, search: e.target.value }))
             }
           />
-          <button
+          {/* <button
             className="bg-accent text-white px-4 py-2 rounded w-full sm:w-auto hover:bg-accent/80 focus:outline-none focus:ring focus:ring-blue-300"
             onClick={updateQueryParams}
           >
             Search
-          </button>
+          </button> */}
         </div>
       </div>
 
-      <div className="mb-8 flex flex-wrap gap-4">
-        <input
-          type="text"
-          placeholder="Writer"
-          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
-          value={filters.writer}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, writer: e.target.value }))
-          }
-        />
-        <input
-          type="text"
-          placeholder="Part of Series"
-          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
-          value={filters.partOfSeries}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, partOfSeries: e.target.value }))
-          }
-        />
-        <select
-          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
-          value={filters.language}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, language: e.target.value }))
-          }
-        >
-          <option value="">Select Language</option>
-          <option value="한국어">한국어</option>
-          <option value="English">English</option>
-          <option value="Deutsch">Deutsch</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Publisher"
-          className="border px-4 py-2 rounded w-full sm:w-auto focus:outline-none focus:ring focus:ring-blue-300"
-          value={filters.publisher}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, publisher: e.target.value }))
-          }
-        />
-        <button
+      <div className="mb-8 flex flex-wrap gap-4 w-full max-w-screen-lg">
+        <div className="flex-1 min-w-[200px]">
+          <input
+            type="text"
+            placeholder="Writer"
+            className="border px-4 py-2 rounded w-full focus:outline-none focus:ring focus:ring-blue-300"
+            value={filters.writer}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, writer: e.target.value }))
+            }
+          />
+        </div>
+        <div className="flex-1 min-w-[200px]">
+          <input
+            type="text"
+            placeholder="Part of Series"
+            className="border px-4 py-2 rounded w-full focus:outline-none focus:ring focus:ring-blue-300"
+            value={filters.partOfSeries}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, partOfSeries: e.target.value }))
+            }
+          />
+        </div>
+        <div className="flex-1 min-w-[200px]">
+          <select
+            className="border px-4 py-2 rounded w-full focus:outline-none focus:ring focus:ring-blue-300"
+            value={filters.language}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, language: e.target.value }))
+            }
+          >
+            <option value="">Select Language</option>
+            <option value="한국어">한국어</option>
+            <option value="English">English</option>
+            <option value="Deutsch">Deutsch</option>
+          </select>
+        </div>
+        <div className="flex-1 min-w-[200px]">
+          <input
+            type="text"
+            placeholder="Publisher"
+            className="border px-4 py-2 rounded w-full focus:outline-none focus:ring focus:ring-blue-300"
+            value={filters.publisher}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, publisher: e.target.value }))
+            }
+          />
+        </div>
+        {/* <button
           className="bg-accent text-white px-4 py-2 rounded w-full sm:w-auto hover:bg-accent/70 focus:outline-none focus:ring focus:ring-blue-300"
           onClick={updateQueryParams}
         >
           Apply Filters
-        </button>
+        </button> */}
       </div>
 
       <div>
