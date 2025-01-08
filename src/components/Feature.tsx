@@ -13,7 +13,6 @@ export function FeaturePost() {
         <source src="/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-
       <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-black/10">
         <div className="flex flex-col md:flex-row items-stretch bg-white/30 backdrop-blur-md p-10 rounded-2xl shadow-lg w-4/5 max-w-4xl">
           <div className="relative w-full md:w-1/2 mb-6 md:mb-0">
@@ -43,14 +42,14 @@ export function FeaturePost() {
             href="/book"
             className="px-6 py-3 bg-gray-500 text-white rounded-full shadow-md hover:bg-opacity-50 text-sm"
           >
-            View by Calendar
+            Calendar
           </Link>
 
           <Link
             href="/book/all"
             className="px-6 py-3 bg-gray-500 text-white rounded-full shadow-md hover:bg-opacity-50 text-sm"
           >
-            View All Books
+            All Books
           </Link>
         </div>
       </div>
