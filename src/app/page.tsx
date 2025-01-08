@@ -24,7 +24,7 @@ const HomePage: React.FC = () => {
       PublicationDate: book.PublicationDate,
       ISBN: book.ISBN,
       Description: book.Description,
-      BookFormat: book.BookFormat,
+      BookFormat: Number(book.BookFormat),
       Type: book.Type,
     }));
 
