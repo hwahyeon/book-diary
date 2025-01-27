@@ -48,7 +48,7 @@ const BookDetailPage: React.FC = () => {
           >
             <span>{book.PartOfSeries}</span>
           </Link>
-          <span>{book.SeriesNumber}</span>
+          {book.SeriesNumber !== 0 && <span>{book.SeriesNumber}</span>}
         </div>
         <div className="text-gray-500 flex flex-wrap justify-center space-x-4 text-sm md:text-base">
           <div className="flex items-center space-x-1 mb-2">
