@@ -11,6 +11,7 @@
     "prebuild": "npm run convert-excel-to-json"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.48.1",
     "@types/styled-components": "^5.1.34",
     "lucide-react": "^0.468.0",
     "next": "14.2.5",
