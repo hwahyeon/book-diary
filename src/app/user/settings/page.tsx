@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUser } from "@/lib/auth";
+import { getUser, checkUsernameExists } from "@/lib/auth";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function SettingsPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [language, setLanguage] = useState("en");
-  const [isPrivate, setIsPrivate] = useState(true);
+  const [isPrivate, setIsPrivate] = useState(false);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -24,7 +24,7 @@ export default function SettingsPage() {
       setBio(user.bio || "");
       setPhotoUrl(user.profile_image || "");
       setLanguage(user.language || "en");
-      setIsPrivate(user.isPrivate || true);
+      setIsPrivate(user.isPrivate);
     }
     fetchUserData();
   }, []);
@@ -33,6 +33,15 @@ export default function SettingsPage() {
     e.preventDefault();
     setError("");
     setSuccess(false);
+
+    // Check if username already exists
+    if (username !== user.username) {
+      const usernameExists = await checkUsernameExists(username);
+      if (usernameExists) {
+        setError("This username is already taken. Please choose another one.");
+        return;
+      }
+    }
 
     const res = await fetch("/api/update-profile", {
       method: "POST",
@@ -103,15 +112,15 @@ export default function SettingsPage() {
           </select>
         </div>
 
-        {/* 🔹 Private Account Toggle */}
+        {/* Private Account Toggle */}
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
-            checked={!isPrivate}
+            checked={isPrivate}
             onChange={(e) => setIsPrivate(e.target.checked)}
             className="w-5 h-5 border-black text-black focus:ring-2 focus:ring-black"
           />
-          <span className="text-black font-medium">Public Profile</span>
+          <span className="text-black font-medium">Private Profile</span>
         </label>
 
         {error && <p className="text-red-500 text-sm">{error}</p>}
