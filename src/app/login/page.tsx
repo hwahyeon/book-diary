@@ -60,6 +60,14 @@ export default function LoginPage() {
           Login
         </button>
       </form>
+
+      {/* Forgot Password Button */}
+      <button
+        onClick={() => router.push("/forgot-password")}
+        className="mt-3 text-sm text-gray-600 hover:underline"
+      >
+        Forgot your password?
+      </button>
     </div>
   );
 }
