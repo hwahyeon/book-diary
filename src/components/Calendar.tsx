@@ -156,19 +156,9 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
               onMouseLeave={() => setHoveredDate(null)}
               onClick={() => handleDayClick(date, booksForDate)}
             >
-              {/* Date number */}
-              <span
-                className={`text-[10px] sm:text-xs m-1 w-5 h-5 flex items-center justify-center rounded-full flex-shrink-0
-                  ${isToday ? "bg-accent text-white font-bold" : ""}
-                  ${!isCurrentMonth ? "text-gray-300" : isSunday ? "text-red-400" : isSaturday ? "text-blue-400" : "text-gray-700"}
-                `}
-              >
-                {date.getDate()}
-              </span>
-
-              {/* Book covers */}
+              {/* Book covers (full tile) */}
               {hasBooks && (
-                <div className={`relative flex-1 overflow-hidden ${!isCurrentMonth ? "opacity-40 grayscale" : ""}`}>
+                <div className={`absolute inset-0 ${!isCurrentMonth ? "opacity-40 grayscale" : ""}`}>
                   {isHovered ? (
                     <div className="flex h-full">
                       {booksForDate.map((book, i) => {
@@ -201,14 +191,29 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
                         className="object-cover"
                         onError={(e) => handleImageError(e, booksForDate[0].ID, setErrorImages)}
                       />
-                      {booksForDate.length > 1 && (
-                        <span className="absolute top-1 right-1 bg-accent text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
-                          +{booksForDate.length - 1}
-                        </span>
-                      )}
                     </div>
                   )}
                 </div>
+              )}
+
+              {/* Date number (overlay) */}
+              <span
+                className={`relative z-10 text-[10px] sm:text-xs m-1 w-5 h-5 flex items-center justify-center rounded-full flex-shrink-0
+                  ${isToday ? "bg-accent text-white font-bold" : ""}
+                  ${hasBooks
+                    ? isToday ? "" : "bg-black/30 text-white"
+                    : !isCurrentMonth ? "text-gray-300" : isSunday ? "text-red-400" : isSaturday ? "text-blue-400" : "text-gray-700"
+                  }
+                `}
+              >
+                {date.getDate()}
+              </span>
+
+              {/* +N badge */}
+              {hasBooks && !isHovered && booksForDate.length > 1 && (
+                <span className="absolute top-1 right-1 z-10 bg-accent text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  +{booksForDate.length - 1}
+                </span>
               )}
             </div>
           );
