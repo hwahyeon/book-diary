@@ -123,6 +123,12 @@ export default function DetailPage({ params }: DetailPageProps) {
           </div>
         </Link>
       </div>
+      {filteredBooks.length === 0 && (
+        <div className="flex flex-col items-center py-20 text-center">
+          <p className="text-gray-400 text-lg mb-4">No books recorded on this day.</p>
+          <Link href="/book" className="text-primary hover:underline text-sm">← Back to Calendar</Link>
+        </div>
+      )}
       <ul className="flex flex-wrap gap-4">
         {filteredBooks.map((book: Book, index: number) => (
           <li
