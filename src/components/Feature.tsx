@@ -10,14 +10,14 @@ export function FeaturePost() {
         muted
         className="absolute top-0 left-0 w-full h-full object-cover rounded-2xl"
       >
-        <source src="/video.mp4" type="video/mp4" />
+        <source src="/assets/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-black/10">
         <div className="flex flex-col md:flex-row items-stretch bg-white/30 backdrop-blur-md p-10 rounded-2xl shadow-lg w-4/5 max-w-4xl">
           <div className="relative w-full md:w-1/2 mb-6 md:mb-0">
             <Image
-              src="/cover.jpg"
+              src="/assets/cover.jpg"
               alt="Featured Post"
               className="rounded-lg object-cover"
               width={500}

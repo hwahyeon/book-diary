@@ -20,7 +20,7 @@ export function IntroPost() {
         <div className="relative flex flex-row">
           <div className="relative w-60 h-80 bg-white shadow-lg rounded-lg overflow-hidden transform hover:-translate-y-8 transition-transform duration-300">
             <Image
-              src="/cover1.jpg"
+              src="/assets/cover1.jpg"
               alt="The timeless classics everyone should read"
               fill
               className="object-cover"
@@ -36,7 +36,7 @@ export function IntroPost() {
 
           <div className="relative w-60 h-80 bg-white shadow-lg rounded-lg overflow-hidden transform hover:-translate-y-8 transition-transform duration-300 -ml-24 mt-8">
             <Image
-              src="/cover2.jpg"
+              src="/assets/cover2.jpg"
               alt="The timeless classics everyone should read"
               fill
               className="object-cover"
@@ -52,7 +52,7 @@ export function IntroPost() {
 
           <div className="relative w-60 h-80 bg-white shadow-lg rounded-lg overflow-hidden transform hover:-translate-y-8 transition-transform duration-300 -ml-24 mt-16">
             <Image
-              src="/cover3.jpg"
+              src="/assets/cover3.jpg"
               alt="The timeless classics everyone should read"
               fill
               className="object-cover"
