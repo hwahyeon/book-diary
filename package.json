@@ -11,13 +11,10 @@
     "prebuild": "npm run convert-excel-to-json"
   },
   "dependencies": {
-    "@types/styled-components": "^5.1.34",
     "lucide-react": "^0.468.0",
     "next": "14.2.5",
     "react": "^18",
-    "react-calendar": "^5.0.0",
     "react-dom": "^18",
-    "styled-components": "^6.1.12",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

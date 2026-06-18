@@ -1,254 +1,67 @@
+"use client";
+
 import { useState, useRef } from "react";
-import styled from "styled-components";
-import Calendar from "react-calendar";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Book } from "../types/Book";
 import { handleImageError } from "../utils/imageHandlers";
-import Image from "next/image";
 
 interface CalendarProps {
   books: Book[];
 }
 
-const StyledCalendarWrapper = styled.div`
-  .react-calendar {
-    width: 100%;
-    max-width: 60rem;
-    margin: 0 auto;
-    background: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-      0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    padding-left: 5px;
-    padding-right: 5px;
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+function getCalendarDays(year: number, month: number): Date[] {
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+  const days: Date[] = [];
+
+  for (let i = firstDay - 1; i >= 0; i--) {
+    days.push(new Date(year, month - 1, daysInPrevMonth - i));
+  }
+  for (let i = 1; i <= daysInMonth; i++) {
+    days.push(new Date(year, month, i));
+  }
+  const remaining = 42 - days.length;
+  for (let i = 1; i <= remaining; i++) {
+    days.push(new Date(year, month + 1, i));
   }
 
-  .react-calendar__navigation {
-    min-height: 50px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .react-calendar__navigation__prev-button,
-  .react-calendar__navigation__prev2-button,
-  .react-calendar__navigation__next-button,
-  .react-calendar__navigation__next2-button {
-    font-size: 25px;
-    padding: 15px;
-  }
-
-  .react-calendar__month-view__days__day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 150px;
-  }
-
-  .react-calendar__month-view__days__day abbr {
-    font-size: 9px;
-  }
-
-  .react-calendar__month-view__weekdays {
-    display: flex;
-    justify-content: center;
-  }
-
-  .react-calendar__month-view__weekdays abbr {
-    font-weight: 500;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .react-calendar__month-view__days__day--weekend {
-    abbr {
-      color: #f87171;
-    }
-  }
-
-  .react-calendar__month-view__days__day--neighboringMonth {
-    abbr {
-      color: #d2d4d6;
-    }
-    pointer-events: none;
-  }
-
-  .react-calendar__tile--now {
-    abbr {
-      font-weight: 800;
-      background-color: #e88b71;
-      color: white;
-      border-radius: 30%;
-      padding: 5px;
-      display: inline-block;
-    }
-  }
-
-  .react-calendar__tile {
-    height: 8rem;
-    width: 8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1px;
-    position: relative;
-  }
-
-  .react-calendar__tile--active {
-    background-color: #fde8e2;
-    color: #4e6176;
-  }
-
-  .react-calendar__navigation__label {
-    font-weight: 500;
-    font-size: 18px;
-  }
-
-  .not-current-month {
-    opacity: 0.7;
-    pointer-events: none;
-  }
-
-  .not-current-month img {
-    filter: grayscale(100%);
-  }
-
-  @media (max-width: 768px) {
-    .react-calendar {
-      padding: 0px;
-    }
-    .react-calendar__tile {
-      height: 6rem;
-      width: 6rem;
-      padding: 0.1px;
-    }
-    .react-calendar__month-view__days__day {
-      min-height: 120px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .react-calendar {
-      padding: 0px;
-    }
-    .react-calendar__tile {
-      height: 4rem;
-      width: 4rem;
-      padding: 0px;
-    }
-    .react-calendar__month-view__days__day {
-      min-height: 90px;
-    }
-  }
-`;
-
-const BookCoversContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  position: relative;
-`;
-
-const BookCover = styled.div`
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  margin: 2px;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background-color: black;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const CalendarTile = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  &.cover ${BookCover}:first-child {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
-
-const BookCount = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: #e88b71;
-  color: #fff;
-  border-radius: 50%;
-  padding: 0.2rem 0.4rem;
-  font-size: 0.75rem;
-`;
+  return days;
+}
 
 const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
+  const today = new Date();
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
-  const [activeStartDate, setActiveStartDate] = useState<Date>(new Date());
+  const router = useRouter();
+
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const handlePrevMonth = () => {
-    if (activeStartDate) {
-      const prevMonth = new Date(activeStartDate);
-      prevMonth.setMonth(prevMonth.getMonth() - 1);
-      setActiveStartDate(prevMonth);
+    if (currentMonth === 0) {
+      setCurrentYear((y) => y - 1);
+      setCurrentMonth(11);
+    } else {
+      setCurrentMonth((m) => m - 1);
     }
   };
 
   const handleNextMonth = () => {
-    if (activeStartDate) {
-      const nextMonth = new Date(activeStartDate);
-      nextMonth.setMonth(nextMonth.getMonth() + 1);
-      setActiveStartDate(nextMonth);
-    }
-  };
-
-  const goToView = (bookCount: number, bookIDs: string[]) => {
-    if (!hoveredDate) {
-      console.error("No date hovered");
-      return;
-    }
-
-    const date = new Date(hoveredDate);
-
-    if (isNaN(date.getTime())) {
-      console.error("Invalid date:", hoveredDate);
-      return;
-    }
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    if (bookCount > 1) {
-      const url = `book/${year}/${month}/${day}`;
-      window.location.href = url;
+    if (currentMonth === 11) {
+      setCurrentYear((y) => y + 1);
+      setCurrentMonth(0);
     } else {
-      const url = `book/detail/${bookIDs[0]}`;
-      window.location.href = url;
+      setCurrentMonth((m) => m + 1);
     }
   };
-
-  const handleImageErrorTag = (
-    event: React.SyntheticEvent<HTMLImageElement, Event>,
-    id: string
-  ) => {
-    handleImageError(event, id, setErrorImages);
-  };
-
-  // Swipe
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.changedTouches[0].screenX;
@@ -256,117 +69,152 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     touchEndX.current = e.changedTouches[0].screenX;
-    handleSwipeGesture();
-  };
-
-  const handleSwipeGesture = () => {
-    const deltaX = touchEndX.current - touchStartX.current;
-
-    if (Math.abs(deltaX) > 70) {
-      if (deltaX > 0) {
-        handlePrevMonth();
-        // alert("Swiped right!");
-      } else {
-        handleNextMonth();
-        // alert("Swiped left!");
-      }
+    const delta = touchEndX.current - touchStartX.current;
+    if (Math.abs(delta) > 70) {
+      delta > 0 ? handlePrevMonth() : handleNextMonth();
     }
   };
 
-  const getTileContent = ({ date, view }: { date: Date; view: string }) => {
-    if (view === "month") {
-      const isCurrentMonth = activeStartDate.getMonth() === date.getMonth();
-      const booksForDate = books.filter(
-        (book) => new Date(book.Date).toDateString() === date.toDateString()
-      );
-
-      if (booksForDate.length > 0) {
-        return (
-          <CalendarTile
-            onMouseEnter={() => setHoveredDate(date.toDateString())}
-            onMouseLeave={() => setHoveredDate(null)}
-            className={!isCurrentMonth ? "not-current-month" : ""}
-          >
-            <BookCoversContainer
-              onClick={() =>
-                goToView(
-                  booksForDate.length,
-                  booksForDate.map((book) => book.ID)
-                )
-              }
-            >
-              {hoveredDate === date.toDateString() ? (
-                booksForDate.map((book, index) => {
-                  const [year, month] = book.Date.split("-");
-                  const imageSrc = errorImages[book.ID]
-                    ? "/covers/default.png"
-                    : `/covers/${year}/${month}/${book.ID}.jpg`;
-
-                  return (
-                    <BookCover
-                      key={index}
-                      style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
-                      className="relative w-full h-64"
-                    >
-                      <Image
-                        src={imageSrc}
-                        alt={book.Title || "Default Image"}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 200px"
-                        className="object-cover"
-                      />
-                    </BookCover>
-                  );
-                })
-              ) : (
-                <>
-                  <BookCover
-                    style={{ opacity: !isCurrentMonth ? 0.5 : 1 }}
-                    className="relative w-full h-64"
-                  >
-                    <Image
-                      src={
-                        errorImages[booksForDate[0].ID]
-                          ? "/covers/default.png"
-                          : `/covers/${booksForDate[0].Date.split("-")[0]}/${
-                              booksForDate[0].Date.split("-")[1]
-                            }/${booksForDate[0].ID}.jpg`
-                      }
-                      alt={booksForDate[0].Title || "Default Image"}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 200px"
-                      className="object-cover"
-                    />
-                  </BookCover>
-                  {booksForDate.length > 1 && (
-                    <BookCount>+{booksForDate.length - 1}</BookCount>
-                  )}
-                </>
-              )}
-            </BookCoversContainer>
-          </CalendarTile>
-        );
-      } else {
-        return <CalendarTile></CalendarTile>;
-      }
+  const handleDayClick = (date: Date, booksForDate: Book[]) => {
+    if (booksForDate.length === 0) return;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    if (booksForDate.length === 1) {
+      router.push(`/book/detail/${booksForDate[0].ID}`);
+    } else {
+      router.push(`/book/${year}/${month}/${day}`);
     }
-    return null;
   };
+
+  const days = getCalendarDays(currentYear, currentMonth);
+  const monthLabel = new Date(currentYear, currentMonth).toLocaleString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
 
   return (
-    <StyledCalendarWrapper
+    <div
+      className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <Calendar
-        activeStartDate={activeStartDate}
-        onActiveStartDateChange={({ activeStartDate }) => {
-          if (activeStartDate) setActiveStartDate(activeStartDate);
-        }}
-        tileContent={getTileContent}
-        locale="en-US"
-      />
-    </StyledCalendarWrapper>
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <button
+          onClick={handlePrevMonth}
+          className="p-2 text-primary hover:text-accent transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <h2 className="text-lg font-semibold text-primary">{monthLabel}</h2>
+        <button
+          onClick={handleNextMonth}
+          className="p-2 text-primary hover:text-accent transition-colors"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Weekday headers */}
+      <div className="grid grid-cols-7 border-b border-gray-100">
+        {WEEKDAYS.map((day, i) => (
+          <div
+            key={day}
+            className={`py-2 text-center text-xs font-medium ${
+              i === 0 ? "text-red-400" : i === 6 ? "text-blue-400" : "text-gray-500"
+            }`}
+          >
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar grid */}
+      <div className="grid grid-cols-7">
+        {days.map((date, index) => {
+          const isCurrentMonth = date.getMonth() === currentMonth;
+          const isToday = date.toDateString() === today.toDateString();
+          const dateKey = date.toDateString();
+          const isHovered = hoveredDate === dateKey;
+          const isSunday = date.getDay() === 0;
+          const isSaturday = date.getDay() === 6;
+
+          const booksForDate = books.filter(
+            (book) => new Date(book.Date).toDateString() === dateKey
+          );
+          const hasBooks = booksForDate.length > 0;
+
+          return (
+            <div
+              key={index}
+              className={`relative border-b border-r border-gray-100 h-24 sm:h-32 md:h-36 flex flex-col overflow-hidden
+                ${!isCurrentMonth ? "bg-gray-50" : "bg-white"}
+                ${hasBooks ? "cursor-pointer" : ""}
+              `}
+              onMouseEnter={() => hasBooks && setHoveredDate(dateKey)}
+              onMouseLeave={() => setHoveredDate(null)}
+              onClick={() => handleDayClick(date, booksForDate)}
+            >
+              {/* Date number */}
+              <span
+                className={`text-[10px] sm:text-xs m-1 w-5 h-5 flex items-center justify-center rounded-full flex-shrink-0
+                  ${isToday ? "bg-accent text-white font-bold" : ""}
+                  ${!isCurrentMonth ? "text-gray-300" : isSunday ? "text-red-400" : isSaturday ? "text-blue-400" : "text-gray-700"}
+                `}
+              >
+                {date.getDate()}
+              </span>
+
+              {/* Book covers */}
+              {hasBooks && (
+                <div className={`relative flex-1 overflow-hidden ${!isCurrentMonth ? "opacity-40 grayscale" : ""}`}>
+                  {isHovered ? (
+                    <div className="flex h-full">
+                      {booksForDate.map((book, i) => {
+                        const [y, m] = book.Date.split("-");
+                        return (
+                          <div key={i} className="relative flex-1 h-full">
+                            <Image
+                              src={errorImages[book.ID] ? "/covers/default.png" : `/covers/${y}/${m}/${book.ID}.jpg`}
+                              alt={book.Title}
+                              fill
+                              sizes="100px"
+                              className="object-cover"
+                              onError={(e) => handleImageError(e, book.ID, setErrorImages)}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={
+                          errorImages[booksForDate[0].ID]
+                            ? "/covers/default.png"
+                            : `/covers/${booksForDate[0].Date.split("-")[0]}/${booksForDate[0].Date.split("-")[1]}/${booksForDate[0].ID}.jpg`
+                        }
+                        alt={booksForDate[0].Title}
+                        fill
+                        sizes="100px"
+                        className="object-cover"
+                        onError={(e) => handleImageError(e, booksForDate[0].ID, setErrorImages)}
+                      />
+                      {booksForDate.length > 1 && (
+                        <span className="absolute top-1 right-1 bg-accent text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                          +{booksForDate.length - 1}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
