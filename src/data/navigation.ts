@@ -9,7 +9,7 @@ export const navigation: Navigation[] = [
     href: "/book",
     label: "Books",
     submenu: [
-      { href: "/book/", label: "Calender" },
+      { href: "/book/", label: "Calendar" },
       { href: "/book/all", label: "View All Books" },
     ],
   },
