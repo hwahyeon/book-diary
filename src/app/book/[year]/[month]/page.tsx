@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Book } from "@/types/Book";
-import booksData from "@public/data/books.json";
-import { useBackNavigation } from "@/utils/navigation";
+import { books as allBooks } from "@/lib/books";
 import { handleImageError } from "@/utils/imageHandlers";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -20,7 +19,6 @@ interface DetailPageProps {
 export default function DetailPage({ params }: DetailPageProps) {
   const { year, month } = params;
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
-  const [books, setBooks] = useState<Book[]>([]);
   const router = useRouter();
   const handleImageErrorTag = (
     event: React.SyntheticEvent<HTMLImageElement, Event>,
@@ -29,17 +27,7 @@ export default function DetailPage({ params }: DetailPageProps) {
     handleImageError(event, id, setErrorImages);
   };
 
-  useEffect(() => {
-    const transformedBooks: Book[] = (booksData as any).map((book: any) => ({
-      ...book,
-      SeriesNumber: parseInt(book.SeriesNumber, 10),
-      PrintLength: parseInt(book.PrintLength, 10),
-    }));
-
-    setBooks(transformedBooks);
-  }, []);
-
-  const filteredBooks = books.filter((book: Book) => {
+  const filteredBooks = allBooks.filter((book: Book) => {
     const bookDate = new Date(book.Date);
     return (
       bookDate.getFullYear() === parseInt(year) &&
@@ -87,12 +75,6 @@ export default function DetailPage({ params }: DetailPageProps) {
 
   const viewDetail = (date: Book) => {
     router.push(`/book/detail/${date.ID}`);
-  };
-
-  const backNavigation = useBackNavigation();
-
-  const handleBackNavigation = () => {
-    backNavigation();
   };
 
   return (

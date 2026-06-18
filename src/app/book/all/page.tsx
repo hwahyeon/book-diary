@@ -3,19 +3,11 @@
 import { Suspense } from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import booksData from "@public/data/books.json";
 import { Book } from "@/types/Book";
+import { books as normalizedBooks } from "@/lib/books";
 import { handleImageError } from "@/utils/imageHandlers";
 import Image from "next/image";
 import { Search, X } from "lucide-react";
-
-const normalizedBooks: Book[] = booksData.map((book) => ({
-  ...book,
-  BookFormat:
-    typeof book.BookFormat === "number"
-      ? book.BookFormat
-      : parseInt(book.BookFormat as string, 10) || 0,
-}));
 
 function AllListPageContent() {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
