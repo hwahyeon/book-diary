@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Book } from "../types/Book";
 import { handleImageError } from "../utils/imageHandlers";
 
@@ -101,24 +101,44 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
     >
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-        <button
-          onClick={handlePrevMonth}
-          className="p-2 text-primary hover:text-accent transition-colors"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
+        <div className="flex items-center">
+          <button
+            onClick={() => setCurrentYear((y) => y - 1)}
+            className="p-2 text-primary hover:text-accent transition-colors"
+            aria-label="Previous year"
+          >
+            <ChevronsLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={handlePrevMonth}
+            className="p-2 text-primary hover:text-accent transition-colors"
+            aria-label="Previous month"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+        </div>
         <h2
           className="text-lg font-semibold text-primary hover:text-accent cursor-pointer transition-colors"
           onClick={() => router.push(`/book/${currentYear}/${String(currentMonth + 1).padStart(2, "0")}`)}
         >
           {monthLabel}
         </h2>
-        <button
-          onClick={handleNextMonth}
-          className="p-2 text-primary hover:text-accent transition-colors"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
+        <div className="flex items-center">
+          <button
+            onClick={handleNextMonth}
+            className="p-2 text-primary hover:text-accent transition-colors"
+            aria-label="Next month"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => setCurrentYear((y) => y + 1)}
+            className="p-2 text-primary hover:text-accent transition-colors"
+            aria-label="Next year"
+          >
+            <ChevronsRight className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Weekday headers */}
