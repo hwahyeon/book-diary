@@ -42,18 +42,6 @@ export default function DetailPage({ params }: DetailPageProps) {
     );
   });
 
-  const booksByDate = filteredBooks.reduce(
-    (acc: { [key: string]: Book[] }, book: Book) => {
-      const day = new Date(book.Date).getDate().toString();
-      if (!acc[day]) {
-        acc[day] = [];
-      }
-      acc[day].push(book);
-      return acc;
-    },
-    {}
-  );
-
   const shortenWriterName = (writer: string) => {
     const maxLength = 50;
     if (writer.length > maxLength) {
@@ -135,48 +123,40 @@ export default function DetailPage({ params }: DetailPageProps) {
           </div>
         </Link>
       </div>
-      <div>
-        <div className="space-y-6">
-          {Object.keys(booksByDate).map((day) => (
-            <div key={day}>
-              {/* <h3 className="text-lg font-semibold mb-2">{day}</h3> */}
-              <ul className="flex flex-wrap gap-4">
-                {booksByDate[day].map((book: Book, index: number) => (
-                  <li
-                    key={index}
-                    className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer text-gray-900"
-                    onClick={() => viewDetail(book)}
-                  >
-                    <Image
-                      src={
-                        errorImages[book.ID]
-                          ? "/default.png"
-                          : `/covers/${year}/${month}/${book.ID}.jpg`
-                      }
-                      alt={book.Title || "Default Image"}
-                      className="w-full h-64 object-cover mb-4 rounded-lg"
-                      width={256}
-                      height={256}
-                      unoptimized
-                      onError={(event) => handleImageErrorTag(event, book.ID)}
-                    />
-                    <strong className="block whitespace-normal break-words">
-                      {book.Title}
-                    </strong>
-                    <br />
-                    {shortenWriterName(book.Writer)} <br />
-                    <span className="text-sm text-gray-500">
-                      {book.PartOfSeries && book.SeriesNumber
-                        ? `${book.PartOfSeries} ${book.SeriesNumber}`
-                        : book.PartOfSeries || book.SeriesNumber || ""}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ul className="flex flex-wrap gap-4">
+        {filteredBooks.map((book: Book, index: number) => (
+          <li
+            key={index}
+            className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer text-gray-900"
+            onClick={() => viewDetail(book)}
+          >
+            <Image
+              src={
+                errorImages[book.ID]
+                  ? "/covers/default.png"
+                  : `/covers/${year}/${month}/${book.ID}.jpg`
+              }
+              alt={book.Title || "Default Image"}
+              className="w-full h-64 object-cover mb-4 rounded-lg"
+              width={256}
+              height={256}
+              unoptimized
+              onError={(event) => handleImageErrorTag(event, book.ID)}
+            />
+            <strong className="block whitespace-normal break-words">
+              {book.Title}
+            </strong>
+            <p className="text-sm text-gray-600 mt-1">{shortenWriterName(book.Writer)}</p>
+            {(book.PartOfSeries || book.SeriesNumber) && (
+              <p className="text-xs text-gray-500 mt-0.5">
+                {book.PartOfSeries && book.SeriesNumber
+                  ? `${book.PartOfSeries} ${book.SeriesNumber}`
+                  : book.PartOfSeries || book.SeriesNumber}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
