@@ -97,7 +97,12 @@ export default function DetailPage({ params }: DetailPageProps) {
       <div className="space-y-8">
         {Object.keys(booksByDate).map((day) => (
           <div key={day}>
-            <h3 className="text-lg font-semibold mb-3 text-gray-700">{day}일</h3>
+            <h3
+              className="text-lg font-semibold mb-3 text-gray-700 hover:text-accent cursor-pointer transition-colors inline-block"
+              onClick={() => router.push(`/book/${year}/${month}/${String(day).padStart(2, "0")}`)}
+            >
+              {day}일
+            </h3>
             <ul className="flex flex-wrap gap-4">
               {booksByDate[day].map((book: Book, index: number) => (
                 <li
