@@ -1,8 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Book } from "@/types/Book";
+import { handleImageError } from "@/utils/imageHandlers";
 
 export function LatestPost({ posts }: { posts: Book[] | undefined }) {
+  const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
+
   const latestBooks = (posts || [])
     .sort((a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime())
     .slice(0, 4);
@@ -20,11 +26,12 @@ export function LatestPost({ posts }: { posts: Book[] | undefined }) {
             <div key={book.ID} className="bg-white rounded-lg shadow p-4 text-gray-900">
               <div className="relative w-full h-64">
                 <Image
-                  src={`/covers/${year}/${month}/${book.ID}.jpg`}
+                  src={errorImages[book.ID] ? "/covers/default.png" : `/covers/${year}/${month}/${book.ID}.jpg`}
                   alt={book.Title}
                   className="rounded-lg object-cover"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  onError={(e) => handleImageError(e, book.ID, setErrorImages)}
                 />
               </div>
               <h3 className="text-lg font-bold mt-4">{book.Title}</h3>
