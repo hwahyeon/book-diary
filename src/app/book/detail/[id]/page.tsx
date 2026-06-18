@@ -90,9 +90,6 @@ const BookDetailPage: React.FC = () => {
               <div><span className="font-semibold">ISBN:</span> {book.ISBN}</div>
             )}
           </div>
-          {book.Description && (
-            <p className="text-gray-700 leading-relaxed">{book.Description}</p>
-          )}
         </div>
       </div>
     </div>

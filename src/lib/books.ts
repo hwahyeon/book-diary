@@ -13,7 +13,7 @@ export const books: Book[] = rawBooks.map((book: any) => ({
   Publisher: book.Publisher,
   PublicationDate: book.PublicationDate,
   ISBN: book.ISBN,
-  Description: book.Description,
   BookFormat: Number(book.BookFormat),
   Type: book.Type,
+  Location: book.Location,
 }));

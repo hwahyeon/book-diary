@@ -10,7 +10,7 @@ export interface Book {
   Publisher?: string;
   PublicationDate?: string;
   ISBN?: string;
-  BookFormat?: number; // 0: normal, 1: e book, 2: audio book
-  Type?: string;
-  Description?: string;
+  BookFormat?: number; // 0: 일반, 1: 전자책, 2: 오디오북
+  Type?: string;      // B: 책, M: 잡지
+  Location?: string;
 }
