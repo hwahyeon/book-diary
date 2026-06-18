@@ -52,22 +52,25 @@ const BookDetailPage: React.FC = () => {
         </div>
         <div className="text-gray-500 flex flex-wrap justify-center space-x-4 text-sm md:text-base">
           <div className="flex items-center space-x-1 mb-2">
-            <Link href={`/book/all?writer=${encodeURIComponent(book.Writer)}`}>
+            <Link href={`/book/all?writer=${encodeURIComponent(book.Writer)}`} className="text-primary hover:underline">
               <span>{book.Writer}</span>
             </Link>
           </div>
-          <div className="flex items-center space-x-1 mb-2">
-            <Link
-              href={`/book/all?publisher=${encodeURIComponent(
-                book.Publisher || ""
-              )}`}
-            >
-              <span>{book.Publisher}</span>
-            </Link>
-          </div>
-          <div className="flex items-center space-x-1 mb-2">
-            <span>{book.PublicationDate}</span>
-          </div>
+          {book.Publisher && (
+            <div className="flex items-center space-x-1 mb-2">
+              <Link
+                href={`/book/all?publisher=${encodeURIComponent(book.Publisher)}`}
+                className="text-primary hover:underline"
+              >
+                <span>{book.Publisher}</span>
+              </Link>
+            </div>
+          )}
+          {book.PublicationDate && (
+            <div className="flex items-center space-x-1 mb-2">
+              <span>{book.PublicationDate}</span>
+            </div>
+          )}
         </div>
       </div>
       <div className="w-full max-w-4xl flex flex-col lg:flex-row">

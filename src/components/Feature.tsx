@@ -40,14 +40,14 @@ export function FeaturePost() {
         <div className="flex space-x-4 mt-6">
           <Link
             href="/book"
-            className="px-6 py-3 bg-gray-500 text-white rounded-full shadow-md hover:bg-opacity-50 text-sm"
+            className="px-6 py-3 bg-primary text-white rounded-full shadow-md hover:bg-primary/80 text-sm"
           >
             Calendar
           </Link>
 
           <Link
             href="/book/all"
-            className="px-6 py-3 bg-gray-500 text-white rounded-full shadow-md hover:bg-opacity-50 text-sm"
+            className="px-6 py-3 bg-accent text-white rounded-full shadow-md hover:bg-accent/80 text-sm"
           >
             All Books
           </Link>

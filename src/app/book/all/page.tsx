@@ -183,7 +183,7 @@ function AllListPageContent() {
               return (
                 <li
                   key={index}
-                  className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer"
+                  className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer text-gray-900"
                   onClick={() => viewDetail(book)}
                 >
                   <Image

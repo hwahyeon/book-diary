@@ -17,7 +17,7 @@ export function LatestPost({ posts }: { posts: Book[] | undefined }) {
           const month = String(date.getMonth() + 1).padStart(2, "0");
 
           return (
-            <div key={book.ID} className="bg-white rounded-lg shadow p-4">
+            <div key={book.ID} className="bg-white rounded-lg shadow p-4 text-gray-900">
               <div className="relative w-full h-64">
                 <Image
                   src={`/covers/${year}/${month}/${book.ID}.jpg`}
@@ -33,9 +33,9 @@ export function LatestPost({ posts }: { posts: Book[] | undefined }) {
               </p>
               <Link
                 href={`/book/detail/${book.ID}`}
-                className="text-accent mt-4 inline-block"
+                className="text-primary font-semibold mt-4 inline-block hover:underline"
               >
-                Learn More
+                Learn More →
               </Link>
             </div>
           );

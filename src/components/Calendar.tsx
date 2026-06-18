@@ -96,8 +96,8 @@ const StyledCalendarWrapper = styled.div`
   }
 
   .react-calendar__tile--active {
-    background-color: #ffc0ae;
-    color: white;
+    background-color: #fde8e2;
+    color: #4e6176;
   }
 
   .react-calendar__navigation__label {
