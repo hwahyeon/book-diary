@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { X } from "lucide-react";
 import { navigation } from "@/data/navigation";
 
 interface SidebarProps {
@@ -8,50 +11,78 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
-  const handleCloseClick = () => {
-    setSidebarOpen(false);
-  };
+  const close = () => setSidebarOpen(false);
 
   return (
-    <div
-      className={`fixed inset-0 flex z-50 ${sidebarOpen ? "block" : "hidden"}`}
-    >
-      {/* Sidebar-left */}
+    <>
+      {/* Backdrop */}
       <div
-        className={`w-1/2 h-screen bg-gray-700 opacity-90 transition-all duration-500 ${
-          sidebarOpen ? "translate-y-0" : "-translate-y-full"
+        className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-300 ${
+          sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
-        onClick={handleCloseClick}
-      ></div>
+        onClick={close}
+      />
 
-      {/* Sidebar-right */}
+      {/* Panel */}
       <div
-        className={`w-1/2 h-screen bg-white text-black transition-all duration-500 ${
+        className={`fixed top-0 right-0 z-50 h-full w-72 bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="p-4 mt-10 relative">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+          <span className="text-sm font-semibold text-primary tracking-wide uppercase">Menu</span>
           <button
-            className="absolute top-3 right-6 text-4xl cursor-pointer"
-            onClick={handleCloseClick}
+            onClick={close}
+            className="p-1 text-gray-400 hover:text-accent transition-colors"
+            aria-label="Close menu"
           >
-            &times;
+            <X className="w-5 h-5" />
           </button>
-          <nav className="mt-6">
-            {navigation.map((item) => (
-              <Link href={item.href} key={item.href}>
-                <div
-                  className="p-4 text-xl font-bold cursor-pointer hover:text-primary hover:translate-x-2 transition-transform duration-300"
-                  onClick={handleCloseClick}
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-4 py-6">
+          {navigation.map((item) => (
+            <div key={item.href} className="mb-2">
+              {item.submenu ? (
+                <>
+                  <p className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    {item.label}
+                  </p>
+                  <ul className="ml-2 space-y-1">
+                    {item.submenu.map((sub) => (
+                      <li key={sub.href}>
+                        <Link
+                          href={sub.href}
+                          onClick={close}
+                          className="flex items-center px-3 py-2.5 rounded-lg text-gray-700 font-medium hover:bg-background hover:text-accent transition-colors"
+                        >
+                          {sub.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <Link
+                  href={item.href}
+                  onClick={close}
+                  className="flex items-center px-3 py-2.5 rounded-lg text-gray-700 font-medium hover:bg-background hover:text-accent transition-colors"
                 >
                   {item.label}
-                </div>
-              </Link>
-            ))}
-          </nav>
+                </Link>
+              )}
+            </div>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-gray-100">
+          <p className="text-xs text-gray-400">© 2024 hwahyeon</p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
