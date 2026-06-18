@@ -1,4 +1,5 @@
 export const siteConfig = {
+  calendarTitle: "Book Diary",
   title: "Book diary",
   description: "A web application to visualize your reading history on a calendar, with detailed book information and easy Excel upload functionality",
   footer: "© 2024 hwahyeon. All rights reserved.",
