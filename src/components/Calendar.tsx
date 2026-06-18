@@ -107,7 +107,12 @@ const BookCalendar: React.FC<CalendarProps> = ({ books }) => {
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <h2 className="text-lg font-semibold text-primary">{monthLabel}</h2>
+        <h2
+          className="text-lg font-semibold text-primary hover:text-accent cursor-pointer transition-colors"
+          onClick={() => router.push(`/book/${currentYear}/${String(currentMonth + 1).padStart(2, "0")}`)}
+        >
+          {monthLabel}
+        </h2>
         <button
           onClick={handleNextMonth}
           className="p-2 text-primary hover:text-accent transition-colors"
