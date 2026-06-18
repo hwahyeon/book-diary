@@ -38,7 +38,7 @@ const BookDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pt-32 px-10">
-      <div className="w-full max-w-4x1 text-center mb-8">
+      <div className="w-full max-w-4xl text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-4">{book.Title}</h1>
         <div className="text-gray-500 space-x-1 mb-2">
           <Link
