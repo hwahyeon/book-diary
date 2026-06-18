@@ -22,10 +22,22 @@ const BookDetailPage: React.FC = () => {
     );
   }
 
+  const bookFormatLabel = [null, "E-Book", "Audiobook"][book.BookFormat ?? 0];
+  const typeLabel = book.Type === "M" ? "Magazine" : "Book";
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pt-32 px-10">
       <div className="w-full max-w-4xl text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-4">{book.Title}</h1>
+
+        {/* Badges */}
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
+          <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary font-medium">{typeLabel}</span>
+          {bookFormatLabel && (
+            <span className="px-3 py-1 text-xs rounded-full bg-accent/10 text-accent font-medium">{bookFormatLabel}</span>
+          )}
+        </div>
+
         <div className="text-gray-500 space-x-1 mb-2">
           {book.PartOfSeries && (
             <Link
@@ -80,7 +92,7 @@ const BookDetailPage: React.FC = () => {
         </div>
         <div className="w-full lg:w-2/3 p-4">
           <div className="mb-4 space-y-1">
-            {book.PrintLength !== undefined && (
+            {book.PrintLength !== undefined && book.PrintLength !== 0 && (
               <div><span className="font-semibold">Pages:</span> {book.PrintLength}</div>
             )}
             {book.Language && (
@@ -88,6 +100,9 @@ const BookDetailPage: React.FC = () => {
             )}
             {book.ISBN && (
               <div><span className="font-semibold">ISBN:</span> {book.ISBN}</div>
+            )}
+            {book.Location && (
+              <div><span className="font-semibold">Location:</span> {book.Location}</div>
             )}
           </div>
         </div>
