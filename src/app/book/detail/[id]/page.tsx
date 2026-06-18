@@ -1,32 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
-import booksData from "@public/data/books.json";
-import { Book } from "@/types/Book";
+import { books } from "@/lib/books";
 import { handleImageError } from "@/utils/imageHandlers";
 import Link from "next/link";
 import Image from "next/image";
 
 const BookDetailPage: React.FC = () => {
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
-  const [book, setBook] = useState<Book | null>(null);
   const params = useParams();
   const { id } = params;
 
-  const handleImageErrorTag = (
-    event: React.SyntheticEvent<HTMLImageElement, Event>,
-    id: string
-  ) => {
-    handleImageError(event, id, setErrorImages);
-  };
-
-  useEffect(() => {
-    if (id) {
-      const foundBook = booksData.find((book) => book.ID === id);
-      setBook(foundBook || null);
-    }
-  }, [id]);
+  const book = books.find((b) => b.ID === id) ?? null;
 
   if (!book) {
     return (
@@ -41,19 +27,20 @@ const BookDetailPage: React.FC = () => {
       <div className="w-full max-w-4xl text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-4">{book.Title}</h1>
         <div className="text-gray-500 space-x-1 mb-2">
-          <Link
-            href={`/book/all?partOfSeries=${encodeURIComponent(
-              book.PartOfSeries || ""
-            )}`}
-          >
-            <span>{book.PartOfSeries}</span>
-          </Link>
+          {book.PartOfSeries && (
+            <Link
+              href={`/book/all?partOfSeries=${encodeURIComponent(book.PartOfSeries)}`}
+              className="text-primary hover:underline"
+            >
+              {book.PartOfSeries}
+            </Link>
+          )}
           {book.SeriesNumber !== 0 && <span>{book.SeriesNumber}</span>}
         </div>
         <div className="text-gray-500 flex flex-wrap justify-center space-x-4 text-sm md:text-base">
           <div className="flex items-center space-x-1 mb-2">
             <Link href={`/book/all?writer=${encodeURIComponent(book.Writer)}`} className="text-primary hover:underline">
-              <span>{book.Writer}</span>
+              {book.Writer}
             </Link>
           </div>
           {book.Publisher && (
@@ -62,7 +49,7 @@ const BookDetailPage: React.FC = () => {
                 href={`/book/all?publisher=${encodeURIComponent(book.Publisher)}`}
                 className="text-primary hover:underline"
               >
-                <span>{book.Publisher}</span>
+                {book.Publisher}
               </Link>
             </div>
           )}
@@ -75,37 +62,37 @@ const BookDetailPage: React.FC = () => {
       </div>
       <div className="w-full max-w-4xl flex flex-col lg:flex-row">
         <div className="w-full lg:w-1/3 p-4 flex justify-center">
-          <div className="max-w-xs w-full h-70 overflow-hidden flex items-center justify-center">
+          <div className="max-w-xs w-full h-72 overflow-hidden flex items-center justify-center">
             <Image
               src={
                 errorImages[book.ID]
                   ? "/covers/default.png"
-                  : `/covers/${book.Date.split("-")[0]}/${
-                      book.Date.split("-")[1]
-                    }/${book.ID}.jpg`
+                  : `/covers/${book.Date.split("-")[0]}/${book.Date.split("-")[1]}/${book.ID}.jpg`
               }
-              alt={book.Title || "Default Image"}
+              alt={book.Title}
               className="rounded-lg shadow-lg object-cover h-full"
               width={256}
               height={256}
               unoptimized
-              onError={(event) => handleImageErrorTag(event, book.ID)}
+              onError={(e) => handleImageError(e, book.ID, setErrorImages)}
             />
           </div>
         </div>
         <div className="w-full lg:w-2/3 p-4">
-          <div className="mb-1">
-            <div className="mb-1">
-              <span className="font-semibold">Pages:</span> {book.PrintLength}
-            </div>
-            <div className="mb-1">
-              <span className="font-semibold">Language:</span> {book.Language}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">ISBN:</span> {book.ISBN}
-            </div>
+          <div className="mb-4 space-y-1">
+            {book.PrintLength !== undefined && (
+              <div><span className="font-semibold">Pages:</span> {book.PrintLength}</div>
+            )}
+            {book.Language && (
+              <div><span className="font-semibold">Language:</span> {book.Language}</div>
+            )}
+            {book.ISBN && (
+              <div><span className="font-semibold">ISBN:</span> {book.ISBN}</div>
+            )}
           </div>
-          <p className="text-gray-700 leading-relaxed">{book.Description}</p>
+          {book.Description && (
+            <p className="text-gray-700 leading-relaxed">{book.Description}</p>
+          )}
         </div>
       </div>
     </div>

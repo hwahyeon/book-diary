@@ -1,38 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Github, Moon, Sun, Menu, ChevronDown, Home } from "lucide-react";
+import { Menu, ChevronDown, Home } from "lucide-react";
 import { navigation } from "../data/navigation";
 import Sidebar from "./Sidebar";
 
 export const Navbar: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
-  const menuRef = useRef<HTMLLIElement>(null);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => !prev);
-    document.documentElement.classList.toggle("dark", !isDarkMode);
-  };
-
-  const handleSubMenuToggle = (label: string) => {
-    setOpenSubMenu((prev) => (prev === label ? null : label));
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      setOpenSubMenu(null);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <>
@@ -50,33 +25,33 @@ export const Navbar: React.FC = () => {
             <nav className="hidden lg:flex items-center space-x-8">
               <ul className="flex space-x-8 items-center">
                 {navigation.map(({ href, label, submenu }) => (
-                  <li
-                    key={label}
-                    className="relative group"
-                    ref={submenu ? menuRef : undefined}
-                  >
-                    <button
-                      className="relative font-semibold text-primary hover:text-accent transition-colors flex items-center focus:outline-none"
-                      onClick={() => handleSubMenuToggle(label)}
-                    >
-                      {label}
-                      {submenu && (
-                        <ChevronDown className="inline w-4 h-4 ml-1" />
-                      )}
-                    </button>
-                    {submenu && openSubMenu === label && (
-                      <ul className="absolute top-10 left-0 bg-white border border-primary/10 shadow-lg rounded-md py-2 space-y-2 w-48">
-                        {submenu.map(({ href, label }) => (
-                          <li key={href}>
-                            <Link
-                              href={href}
-                              className="block px-4 py-2 text-primary hover:bg-background hover:text-accent rounded-md transition-colors"
-                            >
-                              {label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
+                  <li key={label} className="relative group">
+                    {submenu ? (
+                      <>
+                        <button className="relative font-semibold text-primary hover:text-accent transition-colors flex items-center focus:outline-none">
+                          {label}
+                          <ChevronDown className="inline w-4 h-4 ml-1" />
+                        </button>
+                        <ul className="absolute top-8 left-0 bg-white border border-primary/10 shadow-lg rounded-md py-2 w-48 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150">
+                          {submenu.map(({ href, label }) => (
+                            <li key={href}>
+                              <Link
+                                href={href}
+                                className="block px-4 py-2 text-primary hover:bg-background hover:text-accent rounded-md transition-colors"
+                              >
+                                {label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : (
+                      <Link
+                        href={href}
+                        className="font-semibold text-primary hover:text-accent transition-colors"
+                      >
+                        {label}
+                      </Link>
                     )}
                   </li>
                 ))}
