@@ -94,47 +94,44 @@ export default function DetailPage({ params }: DetailPageProps) {
           </div>
         </Link>
       </div>
-      <div>
-        <div className="space-y-6">
-          {Object.keys(booksByDate).map((day) => (
-            <div key={day}>
-              <h3 className="text-lg font-semibold mb-2">{day}일</h3>
-              <ul className="flex flex-wrap gap-4">
-                {booksByDate[day].map((book: Book, index: number) => (
-                  <li
-                    key={index}
-                    className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer text-gray-900"
-                    onClick={() => viewDetail(book)}
-                  >
-                    <Image
-                      src={
-                        errorImages[book.ID]
-                          ? "/default.png"
-                          : `/covers/${year}/${month}/${book.ID}.jpg`
-                      }
-                      alt={book.Title || "Default Image"}
-                      className="w-full h-64 object-cover mb-4 rounded-lg"
-                      width={256}
-                      height={256}
-                      unoptimized
-                      onError={(event) => handleImageErrorTag(event, book.ID)}
-                    />
-                    <strong className="block whitespace-normal break-words">
-                      {book.Title}
-                    </strong>
-                    <br />
-                    {shortenWriterName(book.Writer)} <br />
-                    <span className="text-sm text-gray-500">
+      <div className="space-y-8">
+        {Object.keys(booksByDate).map((day) => (
+          <div key={day}>
+            <h3 className="text-lg font-semibold mb-3 text-gray-700">{day}일</h3>
+            <ul className="flex flex-wrap gap-4">
+              {booksByDate[day].map((book: Book, index: number) => (
+                <li
+                  key={index}
+                  className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer text-gray-900 hover:shadow-lg transition-shadow"
+                  onClick={() => viewDetail(book)}
+                >
+                  <Image
+                    src={
+                      errorImages[book.ID]
+                        ? "/covers/default.png"
+                        : `/covers/${year}/${month}/${book.ID}.jpg`
+                    }
+                    alt={book.Title || "Default Image"}
+                    className="w-full h-64 object-cover mb-3 rounded-lg"
+                    width={256}
+                    height={256}
+                    unoptimized
+                    onError={(event) => handleImageErrorTag(event, book.ID)}
+                  />
+                  <p className="font-semibold text-sm leading-snug break-words">{book.Title}</p>
+                  <p className="text-xs text-gray-500 mt-1">{shortenWriterName(book.Writer)}</p>
+                  {(book.PartOfSeries || book.SeriesNumber) && (
+                    <p className="text-xs text-primary mt-0.5">
                       {book.PartOfSeries && book.SeriesNumber
                         ? `${book.PartOfSeries} ${book.SeriesNumber}`
-                        : book.PartOfSeries || book.SeriesNumber || ""}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+                        : book.PartOfSeries || book.SeriesNumber}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   );
